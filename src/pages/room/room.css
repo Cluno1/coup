@@ -1,0 +1,13 @@
+.custom-table-row-even {
+    font-size: 12px; /* 设置列表项文字大小为12px */
+    background-color: red; /* 设置表头背景颜色为红色 */
+  }
+  
+  .custom-table-header {
+    background-color: rgb(171, 127, 127); /* 设置表头背景颜色为红色 */
+    color: rgb(0, 0, 0); /* 设置表头文字颜色为白色 */
+  }
+  .custom-table-row-odd{
+    font-size: 12px; /* 设置列表项文字大小为12px */
+    background-color: rgb(103, 216, 143); /* 设置表头背景颜色为红色 */
+  }
