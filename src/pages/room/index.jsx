@@ -15,9 +15,7 @@ export default function Room(){
 
 
 
-  useEffect(()=>{
-
-  },[]);
+  
 
   //玩家数量   时间  第几局  国库  牌堆
   // const roomBase={
@@ -29,6 +27,7 @@ export default function Room(){
   //   courtDeck:[2,2,2,2,2,5],//牌堆牌数
   // }
 
+  //后端更改信息
   const [roomBase,setRoomBase]=useState({
     playerNum:3,
     time:'3:20',
@@ -38,9 +37,10 @@ export default function Room(){
     courtDeck:[2,2,2,2,2,5],//牌堆牌数
   })
 
+  //后端更改信息
   const [actionRecord,setActionRecord]=useState({
     actionPlayerId:2,
-    period:'Act',//'Act','ActChallenge','ChallengeConclusion','ActConclusion','Block','BlockChallenge',''ChallengeConclusion'','BlockConclusion'
+    period:'ChallengeConclusion',//'Act','ActChallenge','ChallengeConclusion','ActConclusion','Block','BlockChallenge',''ChallengeConclusion'','BlockConclusion'
     victimPlayerId:-1,
     actionName:'',
   })
@@ -163,7 +163,7 @@ export default function Room(){
     <Flex vertical gap={'small'}>
       {/* 头部 */}
       <div>
-        <Flex justify="space-around">
+        <Flex justify="space-between">
           <FullScreenComponent  
            />
           <Flex gap={'small'}>

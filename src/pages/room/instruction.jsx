@@ -35,7 +35,7 @@ export  default function Instructions(){
         dataIndex: 'action',
         key: 'action',
         render: (act) => {
-          console.log('act',act)
+          
           if(act==null){
             return (<CloseCircleOutlined />)
           }else if(Array.isArray(act)){
@@ -118,7 +118,7 @@ export  default function Instructions(){
     return (
       <>
         <Button type="primary" onClick={showDrawer}>
-          Instructions
+         说明
         </Button>
         <Drawer
           forceRender
