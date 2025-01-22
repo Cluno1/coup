@@ -26,7 +26,7 @@ import { Flex } from "antd";
   //   //对局信息
   //   isDead:false,
   // }  */
-//中间那个控制按钮的  
+//中间那个控制按钮的面板  
   export default function MainContent({actionRecord,owner,players}){
 
     const [isAct,setIsAct]=useState(false)//行动按钮是否开放
@@ -57,7 +57,7 @@ import { Flex } from "antd";
    },[])
     
     
-return (<Flex gap='large'>
+return (<Flex gap='small' align="flex-end">
 <Instructions />
 <ActionButton disabled={!isAct} players={players} />
 <ChallengeButton disabled={!isChallenge}/>
@@ -128,7 +128,7 @@ function ActionButton({disabled, players}){
 
     //行动的按钮
     const actButton = <Button type="text">{actionVictim?actionChoose+' '+actionVictim:actionChoose}</Button>;
-    return (<Flex gap={'small'}>
+    return (<Flex vertical>
     {actPopover(actButton,actionName,true)}
     <Button type="primary" disabled={disabled}>行动</Button>
     </Flex>)
@@ -206,9 +206,9 @@ function BlockButton({disabled}){
 
     
 
-    return (<>
+    return (<Flex vertical>
     {actPopover(button,b,true)}
     <Button type="primary" disabled={disabled}>阻止</Button>
-    </>)
+    </Flex>)
 }
 //

@@ -5,7 +5,10 @@ import { CloseCircleOutlined, LineOutlined } from "@ant-design/icons";
 import characterCards, { commonActions } from "./character";
 import './room.css';
 
-
+/**
+ * 
+ * @returns 说明按钮 组件
+ */
 export  default function Instructions(){
 
     const [visible,setVisible]=useState(false);
