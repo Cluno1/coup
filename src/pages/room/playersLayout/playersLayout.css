@@ -1,0 +1,27 @@
+:root {
+  --mask-color: rgba(0, 0, 0, 0.245); /* 半透明的黑色背景 */
+  --victim-color: #ff220090;
+  --attacker-color: #8400f889;
+}
+
+.mask-container {
+  position: relative;
+}
+
+.mask-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.mask-text {
+  color: white;
+  font-size: 20px;
+  text-align: center;
+}

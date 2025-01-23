@@ -6,15 +6,7 @@ import MainContent from "./mainContent";
 import lMRPlayerLayout from "./playersLayout/playersLayout";
 import ownerLayout from "./playersLayout/ownerLayout";
 
-
-
-
-
 export default function Room(){
-
-
-
-  
 
   //玩家数量   时间  第几局  国库  牌堆
   // const roomBase={
@@ -36,13 +28,19 @@ export default function Room(){
     courtDeck:[2,2,2,2,2,5],//牌堆牌数
   })
 
-  //后端更改    回合信息
+  //后端更改    单回合对局信息
   const [actionRecord,setActionRecord]=useState({
-    actionPlayerId:2,
-    period:'ChallengeConclusion',//'Act','ActChallenge','ChallengeConclusion','ActConclusion','Block','BlockChallenge',''ChallengeConclusion'','BlockConclusion'
-    victimPlayerId:-1,
-    actionName:'Assassinate',
+    actionPlayerId:3,  //行动玩家
+    period:'Act',//'Act','ActChallenge','ChallengeConclusion','ActConclusion','Block','BlockChallenge',''ChallengeConclusion'','BlockConclusion'
+    victimPlayerId:1,  //被攻击玩家
+    character:'Assassin',  //行动玩家声明的角色
+    actionName:'Assassinate',//行动玩家作的行动
+    victimCharacter:'Contessa',  //被攻击玩家的声明角色
+    victimBlock:'Blocks Assassination'     //被攻击玩家所阻止的行动
   })
+
+  //后端更改   单回合提出质疑的玩家的id
+  const [challengerIdArray,setChallengerIdArray]=useState([1,4]);
 
   
 
@@ -140,7 +138,7 @@ export default function Room(){
     playerLeft,
     playerMiddle,
     playerRight
-  }=lMRPlayerLayout(players,owner.id,actionRecord);  //不包括owner的其他玩家队列,分为左 中 右 三个排序好的玩家数组
+  }=lMRPlayerLayout(players,owner,actionRecord,challengerIdArray);  //不包括owner的其他玩家队列,分为左 中 右 三个排序好的玩家数组
 
   //css
   const footerCSS={

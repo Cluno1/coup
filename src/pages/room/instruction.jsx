@@ -133,6 +133,7 @@ export  default function Instructions(){
           key="top"
           height={300}
         >
+          
           <Table
             dataSource={data}
             columns={dataColumns}
@@ -140,6 +141,7 @@ export  default function Instructions(){
             pagination={false}
             
           />
+          
         </Drawer>
       </>
     );
