@@ -16,8 +16,6 @@ import characterCards from '../character';
   }  */
  export default   function ownerLayout(owner){
 
-  
-
         const cards = owner.characterCards.map((cardIndex,index) => {
           if (cardIndex > 0) {
             return (
@@ -34,11 +32,11 @@ import characterCards from '../character';
             return null;
           }
         });
+
+
       return (
-        <>
-        
-        <Flex gap={'small'} align="center" justify="center">
-    
+        <div >
+        <Flex gap={'small'} align="center" justify="center" style={{border: "1px solid" }}>
         <Flex  vertical align="center" justify="center">
           <Image
             preview={false}
@@ -49,7 +47,6 @@ import characterCards from '../character';
           <span>player<b>{owner.id}</b></span>
           
         </Flex>
-        
         {cards}
         <Flex  vertical align="center" justify="center">
         <Image
@@ -60,10 +57,8 @@ import characterCards from '../character';
           <span>coin:<b>{owner.coin}</b></span>
           
         </Flex>
-    
-    
         </Flex>
-        </>
+        </div>
       )
     }
     

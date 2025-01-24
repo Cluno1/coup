@@ -1,9 +1,9 @@
 import { judgeAllegiance } from "./judgeAllegiance";
-import { Button, Image } from "antd";
+import { Image } from "antd";
 import { Flex } from "antd";
-import React, { useState } from "react";
-import "./playersLayout.css";
-import { Popover } from "antd";
+import React from "react";
+import {isChallenger, MaskComponent,MessageComponent} from './component'
+
 
 /**
    * 
@@ -139,25 +139,10 @@ export default function lMRPlayerLayout(
     //每一个玩家的ui
     return playersArray.map((player) => {
 
-      //判断是否质疑者
-      const isChallenger=()=> {
-        //如果非ActChallenge或BlockChallenge，则没有质疑者
-        if(actionRecord.period!='ActChallenge'||actionRecord.period!='BlockChallenge'){
-          return false
-        }
-        let tem=false
-        if (challengerIdArray.length != 0) {
-          challengerIdArray.forEach((id) => {
-            if (id === player.id) {
-             tem=true;
-            }
-          });
-        }
-        return tem;
-      }
       
-      //逻辑判断，对于玩家的蒙版ui
-      if (actionRecord.actionPlayerId === player.id) {
+      
+      //逻辑判断，对于该玩家
+      if (actionRecord.actionPlayerId === player.id) {//该玩家是该回合行动的玩家
         //'Act','ActChallenge','ChallengeConclusion','ActConclusion','Block','BlockChallenge',''ChallengeConclusion'','BlockConclusion'
         const isAct = actionRecord.period === "Act";
         const mc = (
@@ -169,7 +154,8 @@ export default function lMRPlayerLayout(
             maskColor="var(--attacker-color)"
           />
         );
-        if (actionRecord.period === "ActChallenge") {
+        if (actionRecord.period === "ActChallenge") {//打印行动玩家的信息
+
           //act的信息：
           let victimName = null;
           if (actionRecord.victimPlayerId > 0) {
@@ -198,10 +184,10 @@ export default function lMRPlayerLayout(
               messageComponent={message}
             />
           );
-        } else {
+        } else {  
           return mc;
         }
-      } else if (actionRecord.period!='Act'&&actionRecord.victimPlayerId === player.id) {
+      } else if (actionRecord.period!='Act'&&actionRecord.victimPlayerId === player.id) {//该玩家是受攻击的玩家
         const mc = (
           <MaskComponent
             playerComponent={
@@ -211,7 +197,8 @@ export default function lMRPlayerLayout(
             maskColor="var(--victim-color)"
           />
         );
-        if (isChallenger()) {
+
+        if (isChallenger(actionRecord,challengerIdArray,player)) {//判断是否提出了质疑
           
           return (
             <MessageComponent
@@ -227,8 +214,8 @@ export default function lMRPlayerLayout(
 
       const pl = <PlayerLayout player={player} imgWidth={imgWidth} />;
       
-      if (isChallenger()) {
-        console.log('come to isC  --229')
+      if (isChallenger(actionRecord,challengerIdArray,player)) {//判断是否提出了质疑
+        
         return (
           <MessageComponent
             component={pl}
@@ -305,52 +292,5 @@ function PlayerLayout({ player, imgWidth }) {
     </div>
   );
 }
-/**
- *
- * @param {*} param0
- * @returns  简单蒙版组件
- */
-function MaskComponent({
-  playerComponent,
-  maskString,
-  maskColor = "var(--mask-color)",
-}) {
-  return (
-    <div className="mask-container">
-      <div className="mask-layer" style={{ backgroundColor: maskColor }}>
-        <span className="mask-text">{maskString}</span>
-      </div>
-      {playerComponent}
-    </div>
-  );
-}
 
-/**
- *
- * @param {*} param0
- * @returns  返回 简单信息组件
- */
-function MessageComponent({
-  component,
-  messageComponent,
-  direction = "bottom",
-}) {
 
-  const [isOpen,setIsOpen]=useState(true)
-  return (
-    <div onClick={()=>setIsOpen(!isOpen)}>
-    <Popover
-      content={messageComponent}
-      open={isOpen}
-      autoAdjustOverflow
-      placement={direction}
-      
-    >
-      
-      {component}
-      <div></div>
-      
-    </Popover>
-    </div>
-  );
-}

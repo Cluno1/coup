@@ -35,6 +35,10 @@ import { Flex } from "antd";
 
 //'Act','ActChallenge','ChallengeConclusion','ActConclusion','Block','BlockChallenge',''ChallengeConclusion'','BlockConclusion'
    useEffect(()=>{
+    setIsAct(false)
+    setIsChallenge(false)
+    setIsBlock(false)
+    
     if(actionRecord.actionPlayerId===owner.id){
         if(actionRecord.period==='Act'){
             setIsAct(true)
@@ -54,7 +58,7 @@ import { Flex } from "antd";
         }
     }
 
-   },[])
+   },[actionRecord.period])
     
     
 return (<Flex gap='small' align="flex-end">

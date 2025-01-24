@@ -1,5 +1,5 @@
-import React, {  useState } from "react";
-import { Flex } from "antd";
+import React, {  useEffect, useState } from "react";
+import { Button, Flex } from "antd";
 import FullScreenComponent from "../utls/fullScreen";
 
 import MainContent from "./mainContent";
@@ -38,6 +38,23 @@ export default function Room(){
     victimCharacter:'Contessa',  //被攻击玩家的声明角色
     victimBlock:'Blocks Assassination'     //被攻击玩家所阻止的行动
   })
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // 使用函数式更新来确保我们总是基于最新的state进行更新
+      setActionRecord(prevState => {
+        // 根据当前period的值来决定下一个period的值
+        const newPeriod = prevState.period === 'Act' ? 'ActChallenge' : 'Act';
+        
+        // 返回新的actionRecord对象，只更新period属性
+        return { ...prevState, period: newPeriod };
+        
+      });
+    }, 5000);
+
+    // 清除定时器
+    return () => clearInterval(interval);
+  }, []); // 空依赖数组表示这个effect只在组件挂载时运行一次
 
   //后端更改   单回合提出质疑的玩家的id
   const [challengerIdArray,setChallengerIdArray]=useState([1,4]);
@@ -143,11 +160,10 @@ export default function Room(){
   //css
   const footerCSS={
     position: 'absolute',
-    left: '50%',
     bottom: 0,
-    transform: 'translateX(-50%)',
-    width: '100%',/* 或者具体的宽度 */
-    textAlign: 'center', 
+    // transform: 'translateX(-50%)',
+    // width: '100%',/* 或者具体的宽度 */
+    // textAlign: 'center', 
   }
   const mainCss={
     
@@ -198,7 +214,12 @@ export default function Room(){
         </Flex>
       </div>
 
-      <div style={footerCSS} >{ownerLayout(owner) }</div>
+      <div style={footerCSS}>
+        <Flex justify="center" style={{width:'100vw'}}>
+        {ownerLayout(owner) }
+        </Flex>
+        
+      </div>
       </Flex>
     </>
   );
