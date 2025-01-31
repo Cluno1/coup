@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import "./playersLayout.css";
 import { Popover, Image } from "antd";
 import { courtDeckBackgroundUrl } from "../../utls/imgUrl";
@@ -117,14 +117,14 @@ export const courtDeck = (player, imgWidth, cardFlipName = "") => {
     });
   }
 
-  if (player.characterCards) {//是主玩家，展示主玩家的牌
+  if (player.characterCards) {
+    //是主玩家，展示主玩家的牌
     const cards = player.characterCards.map((cardIndex) => {
       if (cardIndex > 0) {
-        if (flipCardUrl===characterCards[cardIndex].img) {
-          
+        if (flipCardUrl === characterCards[cardIndex].img) {
           return (
             <>
-                <CardFlip frontCardImg={flipCardUrl} imgWidth={imgWidth/1.3} />
+              <CardFlip frontCardImg={flipCardUrl} imgWidth={imgWidth / 1.3} />
             </>
           );
         }
@@ -144,15 +144,12 @@ export const courtDeck = (player, imgWidth, cardFlipName = "") => {
     return cards;
   }
 
-  
   let courtDeck = [];
   for (let i = 0; i < player.characterCardNum; i++) {
     if (flipCardUrl) {
       courtDeck.push(
         <>
-          
-            <CardFlip frontCardImg={flipCardUrl} imgWidth={imgWidth/1.3}/>
-          
+          <CardFlip frontCardImg={flipCardUrl} imgWidth={imgWidth / 1.3} />
         </>
       );
       flipCardUrl = null;
@@ -170,3 +167,47 @@ export const courtDeck = (player, imgWidth, cardFlipName = "") => {
   }
   return courtDeck;
 };
+
+/**
+ * 返回可被选择的手牌
+ * @param {object} owner 
+ * @param {number} imgWidth 
+ * @returns 
+ */
+export function canSelectCourt(owner, imgWidth,onSelect) {
+    
+  const [selectCard,setSelectCard]=useState(null)
+
+  const selectedCss = {
+    width: `${imgWidth * 1.3}px`,
+    transform: 'translateY(-20%) scale(1.3)',
+    transition: 'all 0.4s ease-in-out',
+  };
+
+  const cardCss = {
+    width: `${imgWidth}px`,
+    cursor: 'pointer',
+    transition: 'all 0.4s ease-in-out',
+  };
+
+
+  return owner.characterCards.map((cardIndex) => {
+    return (
+      <>
+        <img
+          style={selectCard===cardIndex?selectedCss:cardCss}
+          src={characterCards[cardIndex].img}
+          onClick={()=>{
+            if(selectCard!=cardIndex){
+              setSelectCard(cardIndex)
+              onSelect(cardIndex)
+            }else{
+              setSelectCard(null)
+              onSelect(null)
+            }
+          }}
+        />
+      </>
+    );
+  });
+}

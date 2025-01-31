@@ -1,9 +1,10 @@
-import { Flex } from "antd";
+import { Button, Flex } from "antd";
 import { backgroundUrl } from "../../utls/imgUrl";
 import "./challengeConclusion.css";
 import { Divider } from "antd";
-import { courtDeck } from "../playersLayout/component";
+import { canSelectCourt, courtDeck } from "../playersLayout/component";
 import { Spin } from "antd";
+import { useState } from "react";
 
 /**
  *返回适应屏幕大小的背景图片
@@ -125,6 +126,7 @@ export const conclusionText = (isWinner, isActor) => {
  * @param {boolean} isActor
  * @param {boolean} isLoading   手牌是否是加载中的状态
  * @param {string} cardFlipName     角色名称,让一张手牌旋转
+ * @param {boolean} isCanSelect     是否是可以被选择的卡片，即被选择后可以被传到后端删除
  * @returns
  */
 export const conclusionPlayerLayout = (
@@ -132,8 +134,27 @@ export const conclusionPlayerLayout = (
   isWinner,
   isActor,
   isLoading = false,
-  cardFlipName='',
+  cardFlipName = "",
+  isCanSelect = false
 ) => {
+
+  const [selectCard,setSelectCard]=useState(null)
+
+  const handleButton=()=>{
+    //TODO
+    console.log('todo 传到后端删除')
+  }
+
+  const button = (
+    <>
+      <Divider
+        type="vertical"
+        style={{ borderColor: "black", height: "60px" }}
+      />
+      <Button type="primary" disabled={selectCard?false:true} onClick={handleButton} style={{ color: "white" }}>丢弃</Button>
+    </>
+  );
+
   return (
     <>
       <div style={{ color: "white" }}>
@@ -169,14 +190,19 @@ export const conclusionPlayerLayout = (
             style={{ borderColor: "black", height: "60px" }}
           />
 
-          <Flex vertical gap={'small'}>
+          <Flex vertical gap={"small"}>
             <Spin spinning={isLoading}>
-              <Flex gap="small" >{courtDeck(player,30,cardFlipName)}</Flex>
+              <Flex gap="middle">
+                {isCanSelect
+                  ? canSelectCourt(player, 50,setSelectCard)
+                  : courtDeck(player, 30, cardFlipName)}
+              </Flex>
             </Spin>
             <span>
               coin: <b>{player.coin}</b>
             </span>
           </Flex>
+          {isCanSelect?button:null}
         </Flex>
       </div>
     </>

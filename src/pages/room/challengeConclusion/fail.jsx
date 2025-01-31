@@ -16,7 +16,7 @@ export function Fail({ owner, another, isActor,actorCharacter }) {
           {conclusionPlayerLayout(another, true, !isActor, false,actorCharacter)}
           {conclusionText(false,isActor)}
             {/* TODO 用户点击选择哪一个卡片丢弃 */}
-          {conclusionPlayerLayout(owner, false, isActor, false)}
+          {conclusionPlayerLayout(owner, false, isActor, false,null,true)}
         </Flex>
       </div>
     </>
