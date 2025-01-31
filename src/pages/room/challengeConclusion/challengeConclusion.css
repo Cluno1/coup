@@ -1,0 +1,26 @@
+:root {
+    --mask-black-color: rgba(73, 73, 73, 0.881); /* 半透明的黑色背景 */
+    --mask-white-color: rgba(255, 255, 255, 0.8); /* 半透明的黑色背景 */
+    --success-mask-color:rgba(190, 209, 219, 0.911);
+    --fail-mask-color:rgba(234, 111, 111, 0.933);
+    --success-color:rgb(107, 201, 251);
+    --fail-color:rgb(247, 55, 55);
+
+    /* 获取设备绝对高度 */
+    --min-height: calc(var(--vh, 1vh) * 100);
+}
+
+
+
+.success-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--mask-color);
+  z-index: 10;
+}

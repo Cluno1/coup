@@ -1,13 +1,13 @@
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Flex } from "antd";
 import FullScreenComponent from "../utls/fullScreen";
 
 import MainContent from "./mainContent";
 import lMRPlayerLayout from "./playersLayout/playersLayout";
 import ownerLayout from "./playersLayout/ownerLayout";
+import challengeConclusion from "./challengeConclusion";
 
-export default function Room(){
-
+export default function Room() {
   //玩家数量   时间  第几局  国库  牌堆
   // const roomBase={
   //   playerNum:3,
@@ -19,27 +19,16 @@ export default function Room(){
   // }
 
   //后端更改   房间信息
-  const [roomBase,setRoomBase]=useState({
-    playerNum:3,
-    time:'3:20',
-    round:2,//第几回合
-    treasuryReserve:3,//国库里的金币数量
-    courtDeckNum:15,   //牌数
-    courtDeck:[2,2,2,2,2,5],//牌堆牌数
-  })
+  const [roomBase, setRoomBase] = useState({
+    playerNum: 3,
+    time: "3:20",
+    round: 2, //第几回合
+    treasuryReserve: 3, //国库里的金币数量
+    courtDeckNum: 15, //牌数
+    courtDeck: [2, 2, 2, 2, 2, 5], //牌堆牌数
+  });
 
-  //后端更改    单回合对局信息
-  const [actionRecord,setActionRecord]=useState({
-    actionPlayerId:3,  //行动玩家
-    period:'Act',//'Act','ActChallenge','ChallengeConclusion','ActConclusion','Block','BlockChallenge',''ChallengeConclusion'','BlockConclusion'
-    victimPlayerId:1,  //被攻击玩家
-    character:'Assassin',  //行动玩家声明的角色
-    actionName:'Assassinate',//行动玩家作的行动
-    victimCharacter:'Contessa',  //被攻击玩家的声明角色
-    victimBlock:'Blocks Assassination'     //被攻击玩家所阻止的行动
-  })
-
-  useEffect(() => {
+  /*useEffect(() => {
     const interval = setInterval(() => {
       // 使用函数式更新来确保我们总是基于最新的state进行更新
       setActionRecord(prevState => {
@@ -54,12 +43,10 @@ export default function Room(){
 
     // 清除定时器
     return () => clearInterval(interval);
-  }, []); // 空依赖数组表示这个effect只在组件挂载时运行一次
+  }, []); // 空依赖数组表示这个effect只在组件挂载时运行一次*/
 
   //后端更改   单回合提出质疑的玩家的id
-  const [challengerIdArray,setChallengerIdArray]=useState([1,4]);
-
-  
+  const [challengerIdArray, setChallengerIdArray] = useState([2, 4]);
 
   //2-10 人
 
@@ -75,158 +62,222 @@ export default function Room(){
   //   allegiance:true,//reformist==false or loyalist==true,
   //   //对局信息
   //   isDead:false,
-  // } 
-  const [owner,setOwner]=useState({
+  // }
+  const [owner, setOwner] = useState({
     // 基本信息
-    id:2,
-    avatar:'https://test-1328751369.cos.ap-guangzhou.myqcloud.com/cluno.jpg',//头像
-    name:'cluno',
-    characterCardNum:2,
-    characterCards:[1,3],
-    coin:4,
-    allegiance:true,//reformist==false or loyalist==true,
+    id: 2,
+    avatar: "https://test-1328751369.cos.ap-guangzhou.myqcloud.com/cluno.jpg", //头像
+    name: "cluno",
+    characterCardNum: 2,
+    characterCards: [1, 3],
+    coin: 4,
+    allegiance: true, //阵营 reformist==false or loyalist==true, 
     //对局信息
-    isDead:false,
-  } )
+    isDead: false,
+    assists:0, //助攻
+    kill:1,//击杀数
+    challenge:1,//提出质疑数
 
-  const player1={
-    id:3,
-    avatar:'https://test-1328751369.cos.ap-guangzhou.myqcloud.com/cluno.jpg',//头像
-    name:'james',
-    characterCardNum:1,
-    characterCards:null,
-    coin:2,
-    allegiance:true,
-    //对局信息
-    isDead:false,
-  }
-  const player2={
-    id:1,
-    avatar:'https://test-1328751369.cos.ap-guangzhou.myqcloud.com/cluno.jpg',//头像
-    name:'jason',
-    characterCardNum:2,
-    characterCards:null,
-    coin:2,
-    allegiance:false,
-    //对局信息
-    isDead:false,
-  }
-  const player3={
-    id:4,
-    avatar:'https://test-1328751369.cos.ap-guangzhou.myqcloud.com/cluno.jpg',//头像
-    name:'jerry',
-    characterCardNum:2,
-    characterCards:null,
-    coin:8,
-    allegiance:true,
-  }
-  const player4={
-    id:5,
-    avatar:'https://test-1328751369.cos.ap-guangzhou.myqcloud.com/cluno.jpg',//头像
-    name:'tom',
-    characterCardNum:2,
-    characterCards:null,
-    coin:8,
-    allegiance:true,
-  }
-  const player5={
-    id:6,
-    avatar:'https://test-1328751369.cos.ap-guangzhou.myqcloud.com/cluno.jpg',//头像
-    name:'tomas',
-    characterCardNum:2,
-    characterCards:null,
-    coin:8,
-    allegiance:true,
-  }
-  const player6={
-    id:7,
-    avatar:'https://test-1328751369.cos.ap-guangzhou.myqcloud.com/cluno.jpg',//头像
-    name:'lily',
-    characterCardNum:2,
-    characterCards:null,
-    coin:8,
-    allegiance:true,
-  }
-  // const players=[player1,player2,player3,player4,player5,player6]
-  
-  const [players,setPlayer]=useState([player1,player2,player3,player4,player5,player6])
+  });
 
-  const {
-    playerLeft,
-    playerMiddle,
-    playerRight
-  }=lMRPlayerLayout(players,owner,actionRecord,challengerIdArray);  //不包括owner的其他玩家队列,分为左 中 右 三个排序好的玩家数组
+  const player1 = {
+    id: 3,
+    avatar: "https://test-1328751369.cos.ap-guangzhou.myqcloud.com/cluno.jpg", //头像
+    name: "james",
+    characterCardNum: 1,
+    characterCards: null,
+    coin: 2,
+    allegiance: true,
+    //对局信息
+    isDead: false,
+    assists:0, //助攻
+    kill:1,//击杀数
+    challenge:1,//提出质疑数
+  };
+  const player2 = {
+    id: 1,
+    avatar: "https://test-1328751369.cos.ap-guangzhou.myqcloud.com/cluno.jpg", //头像
+    name: "jason",
+    characterCardNum: 2,
+    characterCards: null,
+    coin: 2,
+    allegiance: false,
+    //对局信息
+    isDead: false,
+    assists:0, //助攻
+    kill:1,//击杀数
+    challenge:1,//提出质疑数
+  };
+  const player3 = {
+    id: 4,
+    avatar: "https://test-1328751369.cos.ap-guangzhou.myqcloud.com/cluno.jpg", //头像
+    name: "jerry",
+    characterCardNum: 2,
+    characterCards: null,
+    coin: 8,
+    allegiance: true,
+    //对局信息
+    isDead: false,
+    assists:0, //助攻
+    kill:1,//击杀数
+    challenge:1,//提出质疑数
+  };
+  const player4 = {
+    id: 5,
+    avatar: "https://test-1328751369.cos.ap-guangzhou.myqcloud.com/cluno.jpg", //头像
+    name: "tom",
+    characterCardNum: 2,
+    characterCards: null,
+    coin: 8,
+    allegiance: true,
+    //对局信息
+    isDead: false,
+    assists:0, //助攻
+    kill:1,//击杀数
+    challenge:1,//提出质疑数
+  };
+  const player5 = {
+    id: 6,
+    avatar: "https://test-1328751369.cos.ap-guangzhou.myqcloud.com/cluno.jpg", //头像
+    name: "暴龙战士",
+    characterCardNum: 2,
+    characterCards: null,
+    coin: 8,
+    allegiance: true,
+    //对局信息
+    isDead: false,
+    assists:0, //助攻
+    kill:1,//击杀数
+    challenge:1,//提出质疑数
+  };
+  const player6 = {
+    id: 7,
+    avatar: "https://test-1328751369.cos.ap-guangzhou.myqcloud.com/cluno.jpg", //头像
+    name: "lily",
+    characterCardNum: 2,
+    characterCards: null,
+    coin: 8,
+    allegiance: true,
+    //对局信息
+    isDead: false,
+    assists:0, //助攻
+    kill:1,//击杀数
+    challenge:1,//提出质疑数
+  };
+  const [players, setPlayer] = useState([
+    player1,
+    player2,
+    player3,
+    player4,
+    player5,
+    player6,
+  ]);
+
+  //后端更改    单回合对局信息
+  const [actionRecord, setActionRecord] = useState({
+    actionPlayerId: 3, //行动玩家id
+    period: "ChallengeConclusion", //'Act','ActChallenge','ChallengeConclusion','ActConclusion','Block','BlockChallenge',''ChallengeConclusion'','BlockConclusion'
+    victimPlayerId: 2, //被攻击玩家id
+    character: "Assassin", //行动玩家声明的角色
+    actionName: "Assassinate", //行动玩家作的行动
+    victimCharacter: "Contessa", //被攻击玩家的声明角色
+    victimBlock: "Blocks Assassination", //被攻击玩家所阻止的行动
+
+    //'ChallengeConclusion'时候需要更新质疑结果
+    challengeConclusion: {
+      challenger: owner, //质疑的玩家
+      actor: player1, //行动的玩家
+      actorCharacter: "Assassin", //行动玩家声明的角色
+      isSuccess: false, //是否成功质疑
+    },
+  });
+
+  //
+  const [isChallengeConclusion, setIsChallengeConclusion] = useState(false);
+
+  //进入conclusion
+  useEffect(() => {
+    if (actionRecord.period === "ChallengeConclusion") {
+      setIsChallengeConclusion(true);
+    }
+  }, [actionRecord]);
+
+  //返回layout
+  const { playerLeft, playerMiddle, playerRight } = lMRPlayerLayout(
+    players,
+    owner,
+    actionRecord,
+    challengerIdArray
+  ); //不包括owner的其他玩家队列,分为左 中 右 三个排序好的玩家数组
 
   //css
-  const footerCSS={
-    position: 'absolute',
+  const footerCSS = {
+    position: "absolute",
     bottom: 0,
     // transform: 'translateX(-50%)',
     // width: '100%',/* 或者具体的宽度 */
-    // textAlign: 'center', 
-  }
-  const mainCss={
-    
-    minHeight:'150px',
-    minWidth:'200px',
-    
-  }
+    // textAlign: 'center',
+  };
+  const mainCss = {
+    minHeight: "150px",
+    minWidth: "200px",
+  };
   return (
     <>
-    <Flex vertical gap={'small'}>
-      {/* 头部 */}
-      <div>
-        <Flex justify="space-between">
-          <FullScreenComponent  
-           />
-          <Flex gap={'small'}>
-          {playerMiddle}
+      
+      <Flex vertical gap={"small"}>
+        {/* 头部 */}
+        <div>
+          <Flex justify="space-between">
+            <FullScreenComponent />
+            <Flex gap={"small"}>{playerMiddle}</Flex>
+            <div>
+              <Flex vertical align="flex-start">
+                <span>时间:{roomBase.time}</span>
+                <span>回合:{roomBase.round}</span>
+                <span>国库:{roomBase.treasuryReserve} coin</span>
+                <span>剩余牌数:{roomBase.courtDeckNum}</span>
+              </Flex>
+            </div>
           </Flex>
-          <div>
-            <Flex vertical align="flex-start">
-              <span>时间:{roomBase.time}</span>
-              <span>回合:{roomBase.round}</span>
-              <span>国库:{roomBase.treasuryReserve} coin</span>
-              <span>剩余牌数:{roomBase.courtDeckNum}</span>
-            </Flex>
-          </div>
-        </Flex>
-      </div>
+        </div>
 
-      <div>
-        <Flex justify="space-between" >
-          <div>
-            <Flex vertical gap={'small'}>
-            {playerLeft}
-            </Flex>
-          </div>
-          <div style={mainCss}>
-            <Flex justify="center" gap={"large"} align="center"style={mainCss}>
-              <MainContent actionRecord={actionRecord} owner={owner} players={players}/>
-              
-            </Flex>
-          </div>
-          <div>
-          <Flex vertical gap={'small'}>
-            {playerRight}
-          </Flex>  
-          </div>
-        </Flex>
-      </div>
+        <div>
+          <Flex justify="space-between">
+            <div>
+              <Flex vertical gap={"small"}>
+                {playerLeft}
+              </Flex>
+            </div>
+            <div style={mainCss}>
+              <Flex
+                justify="center"
+                gap={"large"}
+                align="center"
+                style={mainCss}
+              >
+                <MainContent
+                  actionRecord={actionRecord}
+                  owner={owner}
+                  players={players}
+                />
+              </Flex>
+            </div>
+            <div>
+              <Flex vertical gap={"small"}>
+                {playerRight}
+              </Flex>
+            </div>
+          </Flex>
+        </div>
 
-      <div style={footerCSS}>
-        <Flex justify="center" style={{width:'100vw'}}>
-        {ownerLayout(owner) }
-        </Flex>
-        
-      </div>
+        <div style={footerCSS}>
+          <Flex justify="center" style={{ width: "100vw" }}>
+            {ownerLayout(owner, players, actionRecord, challengerIdArray)}
+          </Flex>
+        </div>
       </Flex>
+      {isChallengeConclusion?challengeConclusion(owner,...Object.values(actionRecord.challengeConclusion)):null}
     </>
   );
 }
-
-
-
-
-
-

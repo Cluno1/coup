@@ -10,6 +10,15 @@ import Test from './pages/test';
 
 
 function App() {
+
+  function adjustHeight() {
+    var vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  }
+  
+  window.addEventListener('resize', adjustHeight);
+  adjustHeight(); // 初始化调用
+  
   return (
     <div className="App">
       <Routes>

@@ -2,7 +2,7 @@ import { judgeAllegiance } from "./judgeAllegiance";
 import { Image } from "antd";
 import { Flex } from "antd";
 import React from "react";
-import {isChallenger, MaskComponent,MessageComponent} from './component'
+import {ActMessage, isChallenger, MaskComponent,MessageComponent,courtDeck} from './component'
 
 
 /**
@@ -139,8 +139,6 @@ export default function lMRPlayerLayout(
     //每一个玩家的ui
     return playersArray.map((player) => {
 
-      
-      
       //逻辑判断，对于该玩家
       if (actionRecord.actionPlayerId === player.id) {//该玩家是该回合行动的玩家
         //'Act','ActChallenge','ChallengeConclusion','ActConclusion','Block','BlockChallenge',''ChallengeConclusion'','BlockConclusion'
@@ -156,27 +154,11 @@ export default function lMRPlayerLayout(
         );
         if (actionRecord.period === "ActChallenge") {//打印行动玩家的信息
 
-          //act的信息：
-          let victimName = null;
-          if (actionRecord.victimPlayerId > 0) {
-            if (owner.id === actionRecord.victimPlayerId) {
-              victimName = owner.name;
-            } else {
-              playersTemp.forEach((p) => {
-                if (p.id === actionRecord.victimPlayerId) victimName = p.name;
-              });
-            }
-          }
-
-          const message = (
-            <>
-              <p>
-                我拥有<b>{actionRecord.character}</b>
-              </p>
-              <p>使用{actionRecord.actionName}</p>
-              {victimName ? <p>对待{victimName}</p> : victimName}
-            </>
-          );
+          const message = <ActMessage
+            actionRecord={actionRecord}
+            players={playersTemp}
+            owner={owner}
+          />
           return (
             <MessageComponent
               component={mc}
@@ -243,24 +225,7 @@ export default function lMRPlayerLayout(
   };
 }
 
-//返回牌数量
-const court = (player, imgWidth) => {
-  let courtDeck = [];
-  for (let i = 0; i < player.characterCardNum; i++) {
-    courtDeck.push(
-      <>
-        <Image
-          preview={false}
-          width={imgWidth / 1.3}
-          src={
-            "https://coup-1328751369.cos.ap-guangzhou.myqcloud.com/role/courtDeck-background.jpg"
-          }
-        />
-      </>
-    );
-  }
-  return courtDeck;
-};
+
 
 /**
  * @returns  组件 返回正常layout
@@ -276,7 +241,7 @@ function PlayerLayout({ player, imgWidth }) {
             player<b>{player.id}</b>
           </span>
         </Flex>
-        <Flex>{court(player, imgWidth)}</Flex>
+        <Flex>{courtDeck(player, imgWidth)}</Flex>
 
         <Flex vertical align="center" justify="center">
           <Image

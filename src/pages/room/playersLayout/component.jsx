@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import "./playersLayout.css";
-import { Popover } from "antd";
+import { Popover, Image } from "antd";
+import { courtDeckBackgroundUrl } from "../../utls/imgUrl";
+import characterCards from "../character";
+import CardFlip from "../challengeConclusion/cardFlip";
 
 /**
  *
@@ -8,66 +11,162 @@ import { Popover } from "antd";
  * @returns  简单蒙版组件
  */
 export function MaskComponent({
-    playerComponent,
-    maskString,
-    maskColor = "var(--mask-color)",
-  }) {
-    return (
-      <div className="mask-container">
-        <div className="mask-layer" style={{ backgroundColor: maskColor }}>
-          <span className="mask-text">{maskString}</span>
-        </div>
-        {playerComponent}
+  playerComponent,
+  maskString,
+  maskColor = "var(--mask-color)",
+}) {
+  return (
+    <div className="mask-container">
+      <div className="mask-layer" style={{ backgroundColor: maskColor }}>
+        <span className="mask-text">{maskString}</span>
       </div>
-    );
-  }
-  
-  
-  /**
-   *
-   * @param {*} param0
-   * @returns  返回 简单信息组件
-   */
-export  function MessageComponent({
-    component,
-    messageComponent,
-    direction = "bottom",
-  }) {
-  
-    const [isOpen,setIsOpen]=useState(true)
-    return (
-      <div onClick={()=>setIsOpen(!isOpen)}>
+      {playerComponent}
+    </div>
+  );
+}
+
+/**
+ *
+ * @param {*} param0
+ * @returns  返回 简单信息组件
+ */
+export function MessageComponent({
+  component,
+  messageComponent,
+  direction = "bottom",
+}) {
+  const [isOpen, setIsOpen] = useState(true);
+  return (
+    <div onClick={() => setIsOpen(!isOpen)}>
       <Popover
         content={messageComponent}
         open={isOpen}
         autoAdjustOverflow
         placement={direction}
-        
       >
-        
         {component}
         <div></div>
-        
       </Popover>
-      </div>
-    );
+    </div>
+  );
+}
+
+//判断是否质疑者
+export const isChallenger = (actionRecord, challengerIdArray, player) => {
+  //如果非ActChallenge或BlockChallenge，则没有质疑者
+  if (
+    actionRecord.period != "ActChallenge" &&
+    actionRecord.period != "BlockChallenge"
+  ) {
+    return false;
   }
+  let tem = false;
+  if (challengerIdArray.length != 0) {
+    challengerIdArray.forEach((id) => {
+      if (id === player.id) {
+        tem = true;
+      }
+    });
+  }
+  return tem;
+};
 
-
-   //判断是否质疑者
-   export const isChallenger=(actionRecord,challengerIdArray,player)=> {
-    
-    //如果非ActChallenge或BlockChallenge，则没有质疑者
-    if(actionRecord.period!='ActChallenge'&&actionRecord.period!='BlockChallenge'){
-      return false
-    }
-    let tem=false
-    if (challengerIdArray.length != 0) {
-      challengerIdArray.forEach((id) => {
-        if (id === player.id) {
-         tem=true;
-        }
+/**
+ * 行动阶段的表达的信息
+ * @param {*} param0
+ * @returns
+ */
+export function ActMessage({ actionRecord, owner, players }) {
+  //act的信息：
+  let victimName = null;
+  if (actionRecord.victimPlayerId > 0) {
+    if (owner.id === actionRecord.victimPlayerId) {
+      victimName = owner.name;
+    } else {
+      players.forEach((p) => {
+        if (p.id === actionRecord.victimPlayerId) victimName = p.name;
       });
     }
-    return tem;
   }
+
+  return (
+    <>
+      <p>
+        我拥有<b>{actionRecord.character}</b>
+      </p>
+      <p>使用{actionRecord.actionName}</p>
+      {victimName ? <p>对待{victimName}</p> : null}
+    </>
+  );
+}
+
+/**
+ * 返回牌背 组件，主玩家返回手牌
+ * @param {object} player
+ * @param {number} imgWidth
+ * @param {string} cardFlipName  需要旋转的卡片的名称，为空则不旋转
+ * @returns
+ */
+export const courtDeck = (player, imgWidth, cardFlipName = "") => {
+  let flipCardUrl = null;
+  if (cardFlipName) {
+    characterCards.forEach((c) => {
+      if (cardFlipName === c.name) {
+        flipCardUrl = c.img;
+      }
+    });
+  }
+
+  if (player.characterCards) {//是主玩家，展示主玩家的牌
+    const cards = player.characterCards.map((cardIndex) => {
+      if (cardIndex > 0) {
+        if (flipCardUrl===characterCards[cardIndex].img) {
+          
+          return (
+            <>
+                <CardFlip frontCardImg={flipCardUrl} imgWidth={imgWidth/1.3} />
+            </>
+          );
+        }
+        return (
+          <>
+            <Image
+              preview={false}
+              width={imgWidth / 1.3}
+              src={characterCards[cardIndex].img}
+            />
+          </>
+        );
+      } else {
+        return null;
+      }
+    });
+    return cards;
+  }
+
+  
+  let courtDeck = [];
+  for (let i = 0; i < player.characterCardNum; i++) {
+    if (flipCardUrl) {
+      courtDeck.push(
+        <>
+          
+            <CardFlip frontCardImg={flipCardUrl} imgWidth={imgWidth/1.3}/>
+          
+        </>
+      );
+      flipCardUrl = null;
+    }
+
+    courtDeck.push(
+      <>
+        <Image
+          preview={false}
+          width={imgWidth / 1.3}
+          src={courtDeckBackgroundUrl}
+        />
+      </>
+    );
+  }
+  return courtDeck;
+};
