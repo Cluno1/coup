@@ -1,7 +1,14 @@
 :root {
   --mask-color: rgba(0, 0, 0, 0.245); /* 半透明的黑色背景 */
+  --player-bg-mask-color: rgba(255, 255, 255, 0.631); /* 玩家的固定小透背景 */
   --victim-color: #ff220090;
   --attacker-color: #8400f889;
+}
+
+.bg-mask {
+   border-radius:10px;
+   padding: 5px;
+   background-color:var(--player-bg-mask-color);
 }
 
 .mask-container {
@@ -9,6 +16,7 @@
 }
 
 .mask-layer {
+  border-radius:10px;
   position: absolute;
   top: 0;
   left: 0;

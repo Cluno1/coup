@@ -103,7 +103,7 @@ export default function Room() {
     id: 1,
     avatar: "https://test-1328751369.cos.ap-guangzhou.myqcloud.com/cluno.jpg", //头像
     name: "jason",
-    characterCardNum: 2,
+    characterCardNum: 0,
     characterCards: null,
     coin: 2,
     allegiance: false,
@@ -207,7 +207,7 @@ export default function Room() {
     },
   });
 
-  //
+  //判断进入challengeConclusion函数
   const [isChallengeConclusion, setIsChallengeConclusion] = useState(false);
 
   //进入conclusion
@@ -229,9 +229,8 @@ export default function Room() {
   const footerCSS = {
     position: "absolute",
     bottom: 0,
-    // transform: 'translateX(-50%)',
-    // width: '100%',/* 或者具体的宽度 */
-    // textAlign: 'center',
+    marginBottom:'2px',
+    
   };
   const mainCss = {
     minHeight: "150px",
@@ -242,7 +241,7 @@ export default function Room() {
       {background('background')}
       <Flex vertical gap={"small"}>
         {/* 头部 */}
-        <div>
+        <div style={{marginTop:'5px',marginLeft:'15px',marginRight:'10px'}}>
           <Flex justify="space-between">
             <FullScreenComponent />
             <Flex gap={"small"}>{playerMiddle}</Flex>
@@ -258,7 +257,7 @@ export default function Room() {
         </div>
 
         <div>
-          <Flex justify="space-between">
+          <Flex justify="space-between" style={{marginLeft:'5px',marginRight:'5px'}}>
             <div>
               <Flex vertical gap={"small"}>
                 {playerLeft}

@@ -52,12 +52,13 @@ export default function ownerLayout(
     }
   });
 
+  //主要的owner layout，其他是外接的补丁
   let commonLayout = (
     <Flex
       gap={"small"}
       align="center"
       justify="center"
-      style={{ border: "1px solid" }}
+      className="bg-mask"
     >
       <Flex vertical align="center" justify="center">
         <Image preview={false} width={60} src={owner.avatar} />

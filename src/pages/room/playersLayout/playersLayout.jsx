@@ -232,7 +232,7 @@ export default function lMRPlayerLayout(
  */
 function PlayerLayout({ player, imgWidth }) {
   return (
-    <div style={{ border: "1px solid" }}>
+    <div className="bg-mask">
       <Flex align="center" justify="center">
         <Flex vertical align="center" justify="center">
           <Image preview={false} width={imgWidth / 1.3} src={player.avatar} />
