@@ -150,6 +150,7 @@ export const courtDeck = (player, imgWidth, cardFlipName = "") => {
 
   
   let courtDeck = [];
+  
   for (let i = 0; i < player.characterCardNum; i++) {
     if (flipCardUrl) {
       courtDeck.push(

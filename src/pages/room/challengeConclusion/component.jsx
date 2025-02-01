@@ -170,7 +170,7 @@ export const conclusionPlayerLayout = (
   cardFlipName = "",
   isCanSelect = false
 ) => {
-  console.log(173,isLoading,player,cardFlipName)
+  console.log(173, isLoading, player, cardFlipName);
   const [selectCard, setSelectCard] = useState(null);
 
   const handleButton = () => {
@@ -231,16 +231,15 @@ export const conclusionPlayerLayout = (
           />
 
           <Flex vertical gap={"small"}>
-          <Spin spinning={isLoading}>
-            <Flex gap="middle">
-              
+            <Spin spinning={isLoading}>
+              <Flex gap="middle">
                 {isCanSelect
                   ? canSelectCourt(player, 50, setSelectCard)
                   : courtDeck(player, 30, cardFlipName)}
-              
-            </Flex>
+                  <div style={cardFlipName?{height:'30px'}:{}}></div>
+              </Flex>
             </Spin>
-
+           
             <span>
               coin: <b>{player.coin}</b>
             </span>

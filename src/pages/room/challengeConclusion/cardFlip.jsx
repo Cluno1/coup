@@ -10,7 +10,7 @@ const CardFlip = ({
   imgWidth,
 }) => {
   return (
-    <div>
+    <>
       <div
         className="card"
         style={{
@@ -34,7 +34,7 @@ const CardFlip = ({
           />
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

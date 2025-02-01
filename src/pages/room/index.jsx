@@ -103,13 +103,13 @@ export default function Room() {
     id: 1,
     avatar: "https://test-1328751369.cos.ap-guangzhou.myqcloud.com/cluno.jpg", //头像
     name: "jason",
-    characterCardNum: 0,
+    characterCardNum: 2,
     characterCards: null,
     coin: 2,
     allegiance: false,
     //对局信息
     isDead: false,
-    assists:0, //助攻
+    assists:2, //助攻
     kill:1,//击杀数
     challenge:1,//提出质疑数
     assistsKilledId:1,// 被助攻杀的人的id，即被人砍半条命的人的id
@@ -167,7 +167,7 @@ export default function Room() {
     id: 7,
     avatar: "https://test-1328751369.cos.ap-guangzhou.myqcloud.com/cluno.jpg", //头像
     name: "lily",
-    characterCardNum: 2,
+    characterCardNum: 0,
     characterCards: null,
     coin: 8,
     allegiance: true,
@@ -191,7 +191,7 @@ export default function Room() {
   //后端更改    单回合对局信息
   const [actionRecord, setActionRecord] = useState({
     actionPlayerId: 3, //行动玩家id
-    period: "Act", //'Act','ActChallenge','ChallengeConclusion','ActConclusion','Block','BlockChallenge',''ChallengeConclusion'','BlockConclusion'
+    period: "ChallengeConclusion", //'Act','ActChallenge','ChallengeConclusion','ActConclusion','Block','BlockChallenge',''ChallengeConclusion'','BlockConclusion'
     victimPlayerId: 2, //被攻击玩家id
     character: "Assassin", //行动玩家声明的角色
     actionName: "Assassinate", //行动玩家作的行动
@@ -200,10 +200,10 @@ export default function Room() {
 
     //'ChallengeConclusion'时候需要更新质疑结果
     challengeConclusion: {
-      challenger: player1, //质疑的玩家
+      challenger: owner, //质疑的玩家
       actor: player2, //行动的玩家
       actorCharacter: "Assassin", //行动玩家声明的角色
-      isSuccess: true, //是否成功质疑
+      isSuccess: false, //是否成功质疑
     },
   });
 
