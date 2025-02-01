@@ -6,6 +6,7 @@ import MainContent from "./mainContent";
 import lMRPlayerLayout from "./playersLayout/playersLayout";
 import ownerLayout from "./playersLayout/ownerLayout";
 import challengeConclusion from "./challengeConclusion";
+import { background } from "./challengeConclusion/component";
 
 export default function Room() {
   //玩家数量   时间  第几局  国库  牌堆
@@ -74,9 +75,11 @@ export default function Room() {
     allegiance: true, //阵营 reformist==false or loyalist==true, 
     //对局信息
     isDead: false,
-    assists:0, //助攻
+    assists:0, //助攻杀人数量
     kill:1,//击杀数
     challenge:1,//提出质疑数
+    assistsKilledId:1,// 被助攻杀的人的id，即被人砍半条命的人的id
+    Killed:1,//被最后一击的人的id
 
   });
 
@@ -93,6 +96,8 @@ export default function Room() {
     assists:0, //助攻
     kill:1,//击杀数
     challenge:1,//提出质疑数
+    assistsKilledId:1,// 被助攻杀的人的id，即被人砍半条命的人的id
+    Killed:1,//被最后一击的人的id
   };
   const player2 = {
     id: 1,
@@ -107,6 +112,8 @@ export default function Room() {
     assists:0, //助攻
     kill:1,//击杀数
     challenge:1,//提出质疑数
+    assistsKilledId:1,// 被助攻杀的人的id，即被人砍半条命的人的id
+    Killed:1,//被最后一击的人的id
   };
   const player3 = {
     id: 4,
@@ -121,6 +128,8 @@ export default function Room() {
     assists:0, //助攻
     kill:1,//击杀数
     challenge:1,//提出质疑数
+    assistsKilledId:1,// 被助攻杀的人的id，即被人砍半条命的人的id
+    Killed:1,//被最后一击的人的id
   };
   const player4 = {
     id: 5,
@@ -135,6 +144,8 @@ export default function Room() {
     assists:0, //助攻
     kill:1,//击杀数
     challenge:1,//提出质疑数
+    assistsKilledId:1,// 被助攻杀的人的id，即被人砍半条命的人的id
+    Killed:1,//被最后一击的人的id
   };
   const player5 = {
     id: 6,
@@ -149,6 +160,8 @@ export default function Room() {
     assists:0, //助攻
     kill:1,//击杀数
     challenge:1,//提出质疑数
+    assistsKilledId:1,// 被助攻杀的人的id，即被人砍半条命的人的id
+    Killed:1,//被最后一击的人的id
   };
   const player6 = {
     id: 7,
@@ -163,6 +176,8 @@ export default function Room() {
     assists:0, //助攻
     kill:1,//击杀数
     challenge:1,//提出质疑数
+    assistsKilledId:1,// 被助攻杀的人的id，即被人砍半条命的人的id
+    Killed:1,//被最后一击的人的id
   };
   const [players, setPlayer] = useState([
     player1,
@@ -176,7 +191,7 @@ export default function Room() {
   //后端更改    单回合对局信息
   const [actionRecord, setActionRecord] = useState({
     actionPlayerId: 3, //行动玩家id
-    period: "ChallengeConclusion", //'Act','ActChallenge','ChallengeConclusion','ActConclusion','Block','BlockChallenge',''ChallengeConclusion'','BlockConclusion'
+    period: "Act", //'Act','ActChallenge','ChallengeConclusion','ActConclusion','Block','BlockChallenge',''ChallengeConclusion'','BlockConclusion'
     victimPlayerId: 2, //被攻击玩家id
     character: "Assassin", //行动玩家声明的角色
     actionName: "Assassinate", //行动玩家作的行动
@@ -185,10 +200,10 @@ export default function Room() {
 
     //'ChallengeConclusion'时候需要更新质疑结果
     challengeConclusion: {
-      challenger: owner, //质疑的玩家
-      actor: player1, //行动的玩家
+      challenger: player1, //质疑的玩家
+      actor: player2, //行动的玩家
       actorCharacter: "Assassin", //行动玩家声明的角色
-      isSuccess: false, //是否成功质疑
+      isSuccess: true, //是否成功质疑
     },
   });
 
@@ -224,7 +239,7 @@ export default function Room() {
   };
   return (
     <>
-      
+      {background('background')}
       <Flex vertical gap={"small"}>
         {/* 头部 */}
         <div>

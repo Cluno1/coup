@@ -53,12 +53,21 @@ export const background = (type = "background") => {
 };
 
 /**
- *
+ * 是否行动者 是否胜利
+ * isActor=true 是行动者 非是质疑者
+ * isWinner=true 胜利
  * @param {boolean} isWinner
  * @param {boolean} isActor
+ * @param {boolean} isSpectator  是否是旁观者
+ * @param {boolean} isChallengeSuccess  如果旁观者是true，质疑者是否质疑成功
  * @returns
  */
-export const conclusionText = (isWinner, isActor) => {
+export const conclusionText = (
+  isWinner,
+  isActor,
+  isSpectator = false,
+  isChallengeSuccess = null
+) => {
   //是否行动者 是否胜利
 
   //isActor=true 是行动者 非是质疑者
@@ -75,7 +84,12 @@ export const conclusionText = (isWinner, isActor) => {
           orientation="left"
           orientationMargin="200"
           style={
-            isWinner
+            isSpectator
+              ? {
+                  borderColor: "var(--success-color)",
+                  color: "var(--success-color)",
+                }
+              : isWinner
               ? {
                   borderColor: "var(--success-color)",
                   color: "var(--success-color)",
@@ -86,7 +100,11 @@ export const conclusionText = (isWinner, isActor) => {
                 }
           }
         >
-          {isActor
+          {isSpectator
+            ? isChallengeSuccess
+              ? "质疑者成功"
+              : "质疑者失败"
+            : isActor
             ? isWinner
               ? "反击质疑"
               : "已被质疑成功"
@@ -95,13 +113,24 @@ export const conclusionText = (isWinner, isActor) => {
             : "质疑失败"}
         </Divider>
 
-        <span>{isWinner ? "YOUWIN!" : "YOUDEAD!"}</span>
+        <span>
+          {isSpectator
+            ? "YOUARESPECTATOR!"
+            : isWinner
+            ? "YOUAREWIN!"
+            : "YOUAREDEAD!"}
+        </span>
 
         <Divider
           orientation="right"
           orientationMargin="200"
           style={
-            isWinner
+            isSpectator
+              ? {
+                  borderColor: "var(--success-color)",
+                  color: "var(--success-color)",
+                }
+              : isWinner
               ? {
                   borderColor: "var(--success-color)",
                   color: "var(--success-color)",
@@ -112,7 +141,11 @@ export const conclusionText = (isWinner, isActor) => {
                 }
           }
         >
-          {isWinner ? "等待对方失去一点势力..." : "请选择失去一点势力！"}
+          {isSpectator
+            ? "等待失败者失去一点势力..."
+            : isWinner
+            ? "等待对方失去一点势力..."
+            : "请选择失去一点势力！"}
         </Divider>
       </Flex>
     </div>
@@ -137,13 +170,13 @@ export const conclusionPlayerLayout = (
   cardFlipName = "",
   isCanSelect = false
 ) => {
+  console.log(173,isLoading,player,cardFlipName)
+  const [selectCard, setSelectCard] = useState(null);
 
-  const [selectCard,setSelectCard]=useState(null)
-
-  const handleButton=()=>{
+  const handleButton = () => {
     //TODO
-    console.log('todo 传到后端删除')
-  }
+    console.log("todo 传到后端删除");
+  };
 
   const button = (
     <>
@@ -151,7 +184,14 @@ export const conclusionPlayerLayout = (
         type="vertical"
         style={{ borderColor: "black", height: "60px" }}
       />
-      <Button type="primary" disabled={selectCard?false:true} onClick={handleButton} style={{ color: "white" }}>丢弃</Button>
+      <Button
+        type="primary"
+        disabled={selectCard ? false : true}
+        onClick={handleButton}
+        style={{ color: "white" }}
+      >
+        丢弃
+      </Button>
     </>
   );
 
@@ -191,18 +231,21 @@ export const conclusionPlayerLayout = (
           />
 
           <Flex vertical gap={"small"}>
-            <Spin spinning={isLoading}>
-              <Flex gap="middle">
+          <Spin spinning={isLoading}>
+            <Flex gap="middle">
+              
                 {isCanSelect
-                  ? canSelectCourt(player, 50,setSelectCard)
+                  ? canSelectCourt(player, 50, setSelectCard)
                   : courtDeck(player, 30, cardFlipName)}
-              </Flex>
+              
+            </Flex>
             </Spin>
+
             <span>
               coin: <b>{player.coin}</b>
             </span>
           </Flex>
-          {isCanSelect?button:null}
+          {isCanSelect ? button : null}
         </Flex>
       </div>
     </>

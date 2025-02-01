@@ -4,6 +4,7 @@ import { Popover, Image } from "antd";
 import { courtDeckBackgroundUrl } from "../../utls/imgUrl";
 import characterCards from "../character";
 import CardFlip from "../challengeConclusion/cardFlip";
+import { Spin } from "antd";
 
 /**
  *
@@ -108,17 +109,20 @@ export function ActMessage({ actionRecord, owner, players }) {
  * @returns
  */
 export const courtDeck = (player, imgWidth, cardFlipName = "") => {
+  
   let flipCardUrl = null;
   if (cardFlipName) {
+    
     characterCards.forEach((c) => {
       if (cardFlipName === c.name) {
         flipCardUrl = c.img;
       }
     });
   }
+  
 
-  if (player.characterCards) {
-    //是主玩家，展示主玩家的牌
+  if (player.characterCards) {//是主玩家，展示主玩家的牌
+    
     const cards = player.characterCards.map((cardIndex) => {
       if (cardIndex > 0) {
         if (flipCardUrl === characterCards[cardIndex].img) {
@@ -144,6 +148,7 @@ export const courtDeck = (player, imgWidth, cardFlipName = "") => {
     return cards;
   }
 
+  
   let courtDeck = [];
   for (let i = 0; i < player.characterCardNum; i++) {
     if (flipCardUrl) {
@@ -153,6 +158,7 @@ export const courtDeck = (player, imgWidth, cardFlipName = "") => {
         </>
       );
       flipCardUrl = null;
+      continue;
     }
 
     courtDeck.push(
@@ -170,40 +176,39 @@ export const courtDeck = (player, imgWidth, cardFlipName = "") => {
 
 /**
  * 返回可被选择的手牌
- * @param {object} owner 
- * @param {number} imgWidth 
- * @returns 
+ * @param {object} owner
+ * @param {number} imgWidth
+ * @param {Function} onSelect
+ * @returns
  */
-export function canSelectCourt(owner, imgWidth,onSelect) {
-    
-  const [selectCard,setSelectCard]=useState(null)
+export function canSelectCourt(owner, imgWidth, onSelect) {
+  const [selectCard, setSelectCard] = useState(null);
 
   const selectedCss = {
     width: `${imgWidth * 1.3}px`,
-    transform: 'translateY(-20%) scale(1.3)',
-    transition: 'all 0.4s ease-in-out',
+    transform: "translateY(-20%) scale(1.3)",
+    transition: "all 0.4s ease-in-out",
   };
 
   const cardCss = {
     width: `${imgWidth}px`,
-    cursor: 'pointer',
-    transition: 'all 0.4s ease-in-out',
+    cursor: "pointer",
+    transition: "all 0.4s ease-in-out",
   };
-
 
   return owner.characterCards.map((cardIndex) => {
     return (
       <>
         <img
-          style={selectCard===cardIndex?selectedCss:cardCss}
+          style={selectCard === cardIndex ? selectedCss : cardCss}
           src={characterCards[cardIndex].img}
-          onClick={()=>{
-            if(selectCard!=cardIndex){
-              setSelectCard(cardIndex)
-              onSelect(cardIndex)
-            }else{
-              setSelectCard(null)
-              onSelect(null)
+          onClick={() => {
+            if (selectCard != cardIndex) {
+              setSelectCard(cardIndex);
+              onSelect(cardIndex);
+            } else {
+              setSelectCard(null);
+              onSelect(null);
             }
           }}
         />

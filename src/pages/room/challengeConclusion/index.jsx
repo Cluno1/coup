@@ -1,4 +1,5 @@
 import { Fail } from "./fail";
+import { Spectator } from "./spectator";
 import { Success } from "./success";
 
 /**
@@ -18,6 +19,7 @@ export default function challengeConclusion(
   if (owner.id === actor.id) {//是行动者
     
     if (isSuccess) {//质疑成功  owner失败，需要挑选一张扔掉
+      return <Fail owner={owner} another={challenger} isActor={true} actorCharacter={actorCharacter} />
       
     } else {//owner成功
 
@@ -27,7 +29,6 @@ export default function challengeConclusion(
   } else if (owner.id === challenger.id) {//是质疑者
     
     if (isSuccess) {//质疑成功
-      
 
       //TODO 需要判断 是否只剩一个角色，如果是一个角色，则该玩家被淘汰！
 
@@ -37,10 +38,8 @@ export default function challengeConclusion(
       return <Fail owner={owner} another={actor} isActor={false} actorCharacter={actorCharacter} />
     }
   } else {
-    //旁观者
-    if (isSuccess) {
-      //质疑成功
-    } else {
-    }
+    
+      return <Spectator actor={actor} challenger={challenger} isChallengeSuccess={isSuccess} actorCharacter={actorCharacter} />
+    
   }
 }
