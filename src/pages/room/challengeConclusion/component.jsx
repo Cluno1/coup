@@ -1,10 +1,10 @@
-import { Button, Flex } from "antd";
+import { Button, Flex, Progress } from "antd";
 import { backgroundUrl } from "../../utls/imgUrl";
 import "./challengeConclusion.css";
 import { Divider } from "antd";
 import { canSelectCourt, courtDeck } from "../playersLayout/component";
 import { Spin } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 /**
  *返回适应屏幕大小的背景图片
@@ -236,10 +236,10 @@ export const conclusionPlayerLayout = (
                 {isCanSelect
                   ? canSelectCourt(player, 50, setSelectCard)
                   : courtDeck(player, 30, cardFlipName)}
-                  <div style={cardFlipName?{height:'30px'}:{}}></div>
+                <div style={cardFlipName ? { height: "30px" } : {}}></div>
               </Flex>
             </Spin>
-           
+
             <span>
               coin: <b>{player.coin}</b>
             </span>
@@ -250,3 +250,81 @@ export const conclusionPlayerLayout = (
     </>
   );
 };
+
+/**
+ * 进度条组件
+ * 
+ * nowTime 现在的时间 ,默认0
+ * totalTime 总共的时间
+ * isInterval 是否定时，默认false ；如果true，从nowTime-totalTime开始定时
+ * onOk ok回调函数，当达到total时间时候触发
+ * isShow 默认true, false为不显示
+ * @param {*} param0
+ * @returns
+ */
+export function CommonProgress({
+  nowTime = 0,
+  totalTime = 0,
+  isInterval = false,
+  onOk=()=>{},
+  isShow=true,
+}) {
+  const [percent, setPercent] = useState(nowTime / totalTime);
+  
+  const [showTime, setShowTime] = useState(nowTime);
+
+ 
+
+  useEffect(() => {
+    if (isInterval) {
+      
+      const startTime = performance.now();
+      // const endTime = startTime + totalTime * 1000;
+
+      const step = () => {
+        const currentTime = performance.now();
+        const elapsed = currentTime - startTime;
+        const newTime = elapsed / 1000;
+        const newPercent = (newTime / totalTime) * 100;
+
+        
+        setPercent(newPercent);
+        setShowTime(Math.floor(newTime));
+
+        if(newTime>=totalTime){
+          
+          onOk()
+        }
+          const nextTick = 10 - ((currentTime - startTime) % 10);
+          setTimeout(step, nextTick);
+        
+      };
+
+      step();
+    }
+  }, [totalTime, isInterval]); // 依赖于totalTime和isInterval
+
+  const conicColors = {
+    from: "blue",
+    to: "red",
+  };
+
+  
+
+  return (
+    <>
+      <Flex style={isShow?null:{display:'none'}}>
+        <div>
+          <Progress
+            percent={percent >= 100 ? 100 : percent}
+            showInfo={false}
+            size={[600, 5]}
+            strokeColor={conicColors}
+            status="active"
+          />
+        </div>
+        <span>{showTime+'s'}</span>
+      </Flex>
+    </>
+  );
+}

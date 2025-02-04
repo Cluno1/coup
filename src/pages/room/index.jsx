@@ -103,7 +103,7 @@ export default function Room() {
     id: 1,
     avatar: "https://test-1328751369.cos.ap-guangzhou.myqcloud.com/cluno.jpg", //头像
     name: "jason",
-    characterCardNum: 2,
+    characterCardNum: 1,
     characterCards: null,
     coin: 2,
     allegiance: false,
@@ -203,7 +203,7 @@ export default function Room() {
       challenger: owner, //质疑的玩家
       actor: player2, //行动的玩家
       actorCharacter: "Assassin", //行动玩家声明的角色
-      isSuccess: false, //是否成功质疑
+      isSuccess: true, //是否成功质疑
     },
   });
 
