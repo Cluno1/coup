@@ -1,4 +1,5 @@
-import { Fail } from "./fail";
+import { act } from "react";
+import { Fail, FailFinal } from "./fail";
 import { Spectator } from "./spectator";
 import { Success, SuccessFinal } from "./success";
 
@@ -17,11 +18,15 @@ export default function challengeConclusion(
   isSuccess
 ) {
 
-  if (owner.id === actor.id) {//是行动者
-    
+  if (owner.id === actor.id) {
+    //owner是行动者
+    if (isSuccess) {
+      //质疑成功  ,owner失败，需要挑选一张扔掉
 
-    if (isSuccess) {//质疑成功  owner失败，需要挑选一张扔掉
       
+      if (actor.characterCardNum <= 1) {//看行动者是否仅剩一张牌
+        return <FailFinal winner={actor} />;
+      }
       return (
         <Fail
           owner={owner}
@@ -31,25 +36,33 @@ export default function challengeConclusion(
         />
       );
     } else {
-      //owner成功
+      //owner成功,行动者成功,质疑失败
+
+      if (challenger.characterCardNum <= 1) {//看质疑者是否仅剩一张牌
+        return <SuccessFinal winner={actor} />;
+      }
 
       return <Success owner={owner} another={challenger} isActor={true} />;
     }
   } else if (owner.id === challenger.id) {
-    //是质疑者
+    //owner是质疑者
 
     if (isSuccess) {
-      //质疑成功
+      //质疑者成功,owner成功,actor失败
 
-      //TODO 需要判断 是否只剩一个角色，
-      if(actor.characterCardNum<=1){//如果是一个角色，则该玩家被淘汰！
-        return <SuccessFinal winner={challenger}/>
-
+      
+      if (actor.characterCardNum <= 1) {//看行动者是否仅剩一张牌
+        //如果是一个角色，则该玩家被淘汰！
+        return <SuccessFinal winner={challenger} />;
       }
 
       return <Success owner={owner} another={actor} isActor={false} />;
     } else {
-      //质疑失败
+      //质疑失败,owner失败,actor成功
+      if (challenger.characterCardNum <= 1) {//看质疑者是否仅剩一张牌
+        return <FailFinal winner={actor} />;
+      }
+
       return (
         <Fail
           owner={owner}
@@ -60,6 +73,17 @@ export default function challengeConclusion(
       );
     }
   } else {
+
+    if(isSuccess){
+      if(actor.characterCardNum <= 1){
+        return <SuccessFinal winner={challenger} />;
+      }
+    }else{
+      if(challenger.characterCardNum<=1){
+        return <SuccessFinal winner={actor}/>
+      }
+    }
+
     return (
       <Spectator
         actor={actor}

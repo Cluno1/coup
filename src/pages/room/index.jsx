@@ -68,9 +68,9 @@ export default function Room() {
     // 基本信息
     id: 2,
     avatar: "https://test-1328751369.cos.ap-guangzhou.myqcloud.com/cluno.jpg", //头像
-    name: "cluno",
-    characterCardNum: 2,
-    characterCards: [1, 3],
+    name: "Cluno",
+    characterCardNum: 1,
+    characterCards: [4],
     coin: 4,
     allegiance: true, //阵营 reformist==false or loyalist==true, 
     //对局信息
@@ -200,8 +200,8 @@ export default function Room() {
 
     //'ChallengeConclusion'时候需要更新质疑结果
     challengeConclusion: {
-      challenger: owner, //质疑的玩家
-      actor: player2, //行动的玩家
+      challenger: player2, //质疑的玩家
+      actor: player1, //行动的玩家
       actorCharacter: "Assassin", //行动玩家声明的角色
       isSuccess: true, //是否成功质疑
     },
