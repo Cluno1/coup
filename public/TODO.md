@@ -20,6 +20,7 @@
 
 ----
 #### 回合信息
+
      //后端更改    单回合对局信息
     const [actionRecord, setActionRecord] = useState({
     actionPlayerId: 3, //行动玩家id
@@ -38,3 +39,20 @@
       isSuccess: true, //是否成功质疑
      },
     });
+
+- Act  
+- ActChallenge 后端接收质疑请求, 把质疑返回给每个人
+  - case: 无人质疑: 跳过ChallengeConclusion阶段
+- ChallengeConclusion 把质疑成功结果返回每一个人,type=ChallengeConclusion
+  - case:接收人的放弃一点势力,更新player,进入下一个阶段; 
+  - case: 如果那个人放弃势力后就会死亡,更新player,手牌降为0
+
+  
+- Block  等待接收block,如果有,进入阶段,无则跳过
+- BlockChallenge  接收质疑
+  
+- ChallengeConclusion 把质疑成功结果返回每一个人,type=ChallengeConclusion
+  - case:接收人的放弃一点势力,进入下一个阶段; 
+  - case: 如果那个人放弃势力后死亡,更新player,手牌降为0
+
+-  ActConclusion 

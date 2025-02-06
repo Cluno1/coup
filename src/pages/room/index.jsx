@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Flex } from "antd";
 import FullScreenComponent from "../utls/fullScreen";
-
 import MainContent from "./mainContent";
 import lMRPlayerLayout from "./playersLayout/playersLayout";
 import ownerLayout from "./playersLayout/ownerLayout";
@@ -9,19 +8,11 @@ import challengeConclusion from "./challengeConclusion";
 import { background } from "./challengeConclusion/component";
 
 export default function Room() {
-  //玩家数量   时间  第几局  国库  牌堆
-  // const roomBase={
-  //   playerNum:3,
-  //   time:'3:20',
-  //   round:2,//第几回合
-  //   treasuryReserve:3,//国库里的金币数量
-  //   courtDeckNum:15,
-  //   courtDeck:[2,2,2,2,2,5],//牌堆牌数
-  // }
+  
 
   //后端更改   房间信息
   const [roomBase, setRoomBase] = useState({
-    playerNum: 3,
+    playerNum: 3,//玩家人数
     time: "3:20",
     round: 2, //第几回合
     treasuryReserve: 3, //国库里的金币数量
@@ -191,7 +182,7 @@ export default function Room() {
   //后端更改    单回合对局信息
   const [actionRecord, setActionRecord] = useState({
     actionPlayerId: 3, //行动玩家id
-    period: "ChallengeConclusion", //'Act','ActChallenge','ChallengeConclusion','ActConclusion','Block','BlockChallenge',''ChallengeConclusion'','BlockConclusion'
+    period: "Block", //'Act','ActChallenge','ChallengeConclusion','Block','BlockChallenge',''ChallengeConclusion'','ActConclusion'
     victimPlayerId: 2, //被攻击玩家id
     character: "Assassin", //行动玩家声明的角色
     actionName: "Assassinate", //行动玩家作的行动

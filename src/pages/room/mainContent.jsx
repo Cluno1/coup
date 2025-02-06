@@ -5,27 +5,7 @@ import characterCards, { commonActions } from "./character";
 import { useEffect, useState } from "react";
 import { Flex } from "antd";
 
-/**
- * const [actionRecord,setActionRecord]=useState({
-    actionPlayerId:1,
-    period:'Act',//'Act','ActChallenge','ChallengeConclusion','ActConclusion','Block','BlockChallenge',''ChallengeConclusion'','BlockConclusion'
-    victimPlayerId:2, 或
-    actionName:'',
-  })
- */
 
-  /** const owner={
-  //   // 基本信息
-  //   id:2,
-  //   avatar:'https://test-1328751369.cos.ap-guangzhou.myqcloud.com/cluno.jpg',//头像
-  //   name:'cluno',
-  //   characterCardNum:2,
-  //   characterCards:[1,3],
-  //   coin:4,
-  //   allegiance:true,//reformist==false or loyalist==true,
-  //   //对局信息
-  //   isDead:false,
-  // }  */
 //中间那个控制按钮的面板  
   export default function MainContent({actionRecord,owner,players}){
 
@@ -33,13 +13,13 @@ import { Flex } from "antd";
     const [isChallenge,setIsChallenge]=useState(false)//挑战按钮是否开放
     const [isBlock,setIsBlock]=useState(false)//阻止按钮是否开放
 
-//'Act','ActChallenge','ChallengeConclusion','ActConclusion','Block','BlockChallenge',''ChallengeConclusion'','BlockConclusion'
+//'Act','ActChallenge','ChallengeConclusion','Block','BlockChallenge',''ChallengeConclusion'','ActConclusion'
    useEffect(()=>{
     setIsAct(false)
     setIsChallenge(false)
     setIsBlock(false)
     
-    if(actionRecord.actionPlayerId===owner.id){
+    if(actionRecord.actionPlayerId===owner.id){//主玩家是行动玩家
         if(actionRecord.period==='Act'){
             setIsAct(true)
             
@@ -50,11 +30,13 @@ import { Flex } from "antd";
 
     }else{
         
-        if(actionRecord.period==='ActChallenge' || actionRecord.period==='BlockChallenge'){
+        if(actionRecord.period==='ActChallenge'){
             
             setIsChallenge(true)
-        }else if(actionRecord.victimPlayerId===owner.id&&actionRecord.period==='BLock'){
+        }else if(actionRecord.victimPlayerId===owner.id&&actionRecord.period==='Block'){//受击玩家
             setIsBlock(true)
+        }else if(actionRecord.victimPlayerId!==owner.id&&actionRecord.period==='BlockChallenge'){//非受击玩家,阶段是BlockChallenge
+            setIsChallenge(true)
         }
     }
 

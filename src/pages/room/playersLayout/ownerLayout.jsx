@@ -81,7 +81,7 @@ export default function ownerLayout(
     </Flex>
   );
 
-  if (actionRecord.actionPlayerId === owner.id) {
+  if (actionRecord.actionPlayerId === owner.id) {//主玩家是行动玩家
     commonLayout = (
       <div style={{ backgroundColor: "var(--attacker-color)" }}>
         {commonLayout}
@@ -89,8 +89,7 @@ export default function ownerLayout(
     );
     //'Act'不用管
 
-    //"ActChallenge"
-    if (actionRecord.period === "ActChallenge") {//打印行动信息，接受别人质疑阶段
+    
       const message = (
         <ActMessage
           actionRecord={actionRecord}
@@ -106,25 +105,21 @@ export default function ownerLayout(
           direction={"top"}
         />
       );
-    } else {
-      return commonLayout;
-    }
-  } else {//非行动玩家
+   
+  } else {//主玩家是非行动玩家
 
-    if (//是被攻击玩家
+    if (//主玩家是被攻击玩家且阶段不是Act
       actionRecord.period != "Act" &&
       actionRecord.victimPlayerId === owner.id
     ) {
       commonLayout = (
-        <div style={{ backgroundColor: "var(--victim-color)" }}>
+        <div style={{ backgroundColor: "var(--owner-victim-color)",borderRadius:'10px' }}>
           {commonLayout}
         </div>
       );
-    } else {//不是被攻击玩家
-      
-    }
+    } 
 
-    if (isChallenger(actionRecord, challengerIdArray, owner)) {
+    if (isChallenger(actionRecord, challengerIdArray, owner)) {//是质疑者的话添加补丁话语
       return (
         <MessageComponent
           component={commonLayout}

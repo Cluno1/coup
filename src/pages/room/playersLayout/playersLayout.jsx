@@ -140,6 +140,7 @@ export default function lMRPlayerLayout(
     return playersArray.map((player) => {
 
       //逻辑判断，对于该玩家
+      
       if (actionRecord.actionPlayerId === player.id) {//该玩家是该回合行动的玩家
         //'Act','ActChallenge','ChallengeConclusion','ActConclusion','Block','BlockChallenge',''ChallengeConclusion'','BlockConclusion'
         const isAct = actionRecord.period === "Act";
@@ -152,7 +153,7 @@ export default function lMRPlayerLayout(
             maskColor="var(--attacker-color)"
           />
         );
-        if (actionRecord.period === "ActChallenge") {//打印行动玩家的信息
+
 
           const message = <ActMessage
             actionRecord={actionRecord}
@@ -166,9 +167,7 @@ export default function lMRPlayerLayout(
               messageComponent={message}
             />
           );
-        } else {  
-          return mc;
-        }
+       
       } else if (actionRecord.period!='Act'&&actionRecord.victimPlayerId === player.id) {//该玩家是受攻击的玩家
         const mc = (
           <MaskComponent
@@ -194,8 +193,8 @@ export default function lMRPlayerLayout(
         }
       }
 
+      //既不是受过攻击玩家也不是行动玩家
       const pl = <PlayerLayout player={player} imgWidth={imgWidth} />;
-      
       if (isChallenger(actionRecord,challengerIdArray,player)) {//判断是否提出了质疑
         
         return (
