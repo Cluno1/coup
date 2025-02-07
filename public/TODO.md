@@ -30,7 +30,7 @@
     actionName: "Assassinate", //行动玩家作的行动
     victimCharacter: "Contessa", //被攻击玩家的声明角色
     victimBlock: "Blocks Assassination", //被攻击玩家所阻止的行动
-
+    actConclusion: true, //行动是否要成功执行
     //'ChallengeConclusion'时候需要更新质疑结果
     challengeConclusion: {
       challenger: owner, //质疑的玩家
@@ -55,4 +55,4 @@
   - case:接收人的放弃一点势力,进入下一个阶段; 
   - case: 如果那个人放弃势力后死亡,更新player,手牌降为0
 
--  ActConclusion 
+-  ActConclusion  返回更新好的player

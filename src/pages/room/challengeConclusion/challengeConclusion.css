@@ -22,5 +22,5 @@
   justify-content: center;
   align-items: center;
   background-color: var(--mask-color);
-  z-index: 10;
+  z-index: 1100;
 }

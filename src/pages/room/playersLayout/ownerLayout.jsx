@@ -6,6 +6,7 @@ import characterCards from "../character";
 import "./playersLayout.css";
 import {
   ActMessage,
+  BlockMessage,
   isChallenger,
   MaskComponent,
   MessageComponent,
@@ -54,12 +55,7 @@ export default function ownerLayout(
 
   //主要的owner layout，其他是外接的补丁
   let commonLayout = (
-    <Flex
-      gap={"small"}
-      align="center"
-      justify="center"
-      className="bg-mask"
-    >
+    <Flex gap={"small"} align="center" justify="center" className="bg-mask">
       <Flex vertical align="center" justify="center">
         <Image preview={false} width={60} src={owner.avatar} />
         <b>{owner.name}</b>
@@ -81,7 +77,8 @@ export default function ownerLayout(
     </Flex>
   );
 
-  if (actionRecord.actionPlayerId === owner.id) {//主玩家是行动玩家
+  if (actionRecord.actionPlayerId === owner.id) {
+    //主玩家是行动玩家
     commonLayout = (
       <div style={{ backgroundColor: "var(--attacker-color)" }}>
         {commonLayout}
@@ -89,37 +86,51 @@ export default function ownerLayout(
     );
     //'Act'不用管
 
-    
-      const message = (
-        <ActMessage
-          actionRecord={actionRecord}
-          players={players}
-          owner={owner}
-        />
-      );
+    const message = (
+      <ActMessage actionRecord={actionRecord} players={players} owner={owner} />
+    );
 
-      return (
-        <MessageComponent
-          component={commonLayout}
-          messageComponent={message}
-          direction={"top"}
-        />
-      );
-   
-  } else {//主玩家是非行动玩家
+    return (
+      <MessageComponent
+        component={commonLayout}
+        messageComponent={message}
+        direction={"top"}
+      />
+    );
+  } else {
+    //主玩家是非行动玩家
 
-    if (//主玩家是被攻击玩家且阶段不是Act
+    if (
+      //主玩家是被攻击玩家且阶段不是Act
       actionRecord.period != "Act" &&
       actionRecord.victimPlayerId === owner.id
     ) {
       commonLayout = (
-        <div style={{ backgroundColor: "var(--owner-victim-color)",borderRadius:'10px' }}>
+        <div
+          style={{
+            backgroundColor: "var(--owner-victim-color)",
+            borderRadius: "10px",
+          }}
+        >
           {commonLayout}
         </div>
       );
-    } 
+      
+      if (actionRecord.period === "BlockChallenge") {
+        //是受击玩家且打印block信息
+        const message = <BlockMessage actionRecord={actionRecord} />;
+        return (
+          <MessageComponent
+            component={commonLayout}
+            messageComponent={message}
+            direction={"top"}
+          />
+        );
+      }
+    }
 
-    if (isChallenger(actionRecord, challengerIdArray, owner)) {//是质疑者的话添加补丁话语
+    if (isChallenger(actionRecord, challengerIdArray, owner)) {
+      //是质疑者的话添加补丁话语
       return (
         <MessageComponent
           component={commonLayout}

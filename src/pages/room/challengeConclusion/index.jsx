@@ -1,4 +1,3 @@
-import { act } from "react";
 import { Fail, FailFinal } from "./fail";
 import { Spectator } from "./spectator";
 import { Success, SuccessFinal } from "./success";
@@ -15,7 +14,7 @@ export default function challengeConclusion(
   challenger,
   actor,
   actorCharacter,
-  isSuccess
+  isSuccess,
 ) {
 
   if (owner.id === actor.id) {

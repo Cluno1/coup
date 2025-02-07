@@ -2,8 +2,14 @@ import { judgeAllegiance } from "./judgeAllegiance";
 import { Image } from "antd";
 import { Flex } from "antd";
 import React from "react";
-import {ActMessage, isChallenger, MaskComponent,MessageComponent,courtDeck} from './component'
-
+import {
+  ActMessage,
+  isChallenger,
+  MaskComponent,
+  MessageComponent,
+  courtDeck,
+  BlockMessage,
+} from "./component";
 
 /**
    * 
@@ -96,7 +102,7 @@ export default function lMRPlayerLayout(
   }
 
   const players = [...player];
-  const playersTemp=player;
+  const playersTemp = player;
   //分别按照逆时针顺序排序好左中右数组
   let playerLeft = [];
   let playerMiddle = [];
@@ -138,10 +144,9 @@ export default function lMRPlayerLayout(
   function layout(playersArray, direction) {
     //每一个玩家的ui
     return playersArray.map((player) => {
-
       //逻辑判断，对于该玩家
-      
-      if (actionRecord.actionPlayerId === player.id) {//该玩家是该回合行动的玩家
+      if (actionRecord.actionPlayerId === player.id) {
+        //该玩家是该回合行动的玩家
         //'Act','ActChallenge','ChallengeConclusion','ActConclusion','Block','BlockChallenge',''ChallengeConclusion'','BlockConclusion'
         const isAct = actionRecord.period === "Act";
         const mc = (
@@ -154,21 +159,28 @@ export default function lMRPlayerLayout(
           />
         );
 
-
-          const message = <ActMessage
+        if (isAct) {
+          return mc;
+        }
+        const message = (
+          <ActMessage
             actionRecord={actionRecord}
             players={playersTemp}
             owner={owner}
           />
-          return (
-            <MessageComponent
-              component={mc}
-              direction={direction}
-              messageComponent={message}
-            />
-          );
-       
-      } else if (actionRecord.period!='Act'&&actionRecord.victimPlayerId === player.id) {//该玩家是受攻击的玩家
+        );
+        return (
+          <MessageComponent
+            component={mc}
+            direction={direction}
+            messageComponent={message}
+          />
+        );
+      } else if (
+        actionRecord.period != "Act" &&
+        actionRecord.victimPlayerId === player.id
+      ) {
+        //该玩家是受攻击的玩家
         const mc = (
           <MaskComponent
             playerComponent={
@@ -179,8 +191,21 @@ export default function lMRPlayerLayout(
           />
         );
 
-        if (isChallenger(actionRecord,challengerIdArray,player)) {//判断是否提出了质疑
-          
+        if (actionRecord.period === "BlockChallenge") {
+          //打印阻止信息
+          const message = <BlockMessage actionRecord={actionRecord} />;
+          return (
+            <MessageComponent
+              component={mc}
+              direction={direction}
+              messageComponent={message}
+            />
+          );
+        }
+
+        if (isChallenger(actionRecord, challengerIdArray, player)) {
+          //判断是否提出了质疑
+
           return (
             <MessageComponent
               component={mc}
@@ -195,8 +220,9 @@ export default function lMRPlayerLayout(
 
       //既不是受过攻击玩家也不是行动玩家
       const pl = <PlayerLayout player={player} imgWidth={imgWidth} />;
-      if (isChallenger(actionRecord,challengerIdArray,player)) {//判断是否提出了质疑
-        
+      if (isChallenger(actionRecord, challengerIdArray, player)) {
+        //判断是否提出了质疑
+
         return (
           <MessageComponent
             component={pl}
@@ -210,35 +236,27 @@ export default function lMRPlayerLayout(
     });
   }
 
-
-  let pl = layout(playerLeft,'right');
-  let pm = layout(playerMiddle,'bottom');
-  let pr = layout(playerRight,'left');
-
-
+  let pl = layout(playerLeft, "right");
+  let pm = layout(playerMiddle, "bottom");
+  let pr = layout(playerRight, "left");
 
   return {
-    playerLeft:pl,
-    playerMiddle:pm,
-    playerRight:pr,
+    playerLeft: pl,
+    playerMiddle: pm,
+    playerRight: pr,
   };
 }
-
-
 
 /**
  * @returns  组件 返回正常layout
  */
 function PlayerLayout({ player, imgWidth }) {
   return (
-    <div className="bg-mask">
-      <Flex align="center" justify="center">
+    <Flex className="bg-mask" vertical justify="center" align="center">
+      <Flex align="flex-end" justify="center">
         <Flex vertical align="center" justify="center">
           <Image preview={false} width={imgWidth / 1.3} src={player.avatar} />
           <b>{player.name}</b>
-          <span>
-            player<b>{player.id}</b>
-          </span>
         </Flex>
         <Flex>{courtDeck(player, imgWidth)}</Flex>
 
@@ -253,8 +271,9 @@ function PlayerLayout({ player, imgWidth }) {
           </span>
         </Flex>
       </Flex>
-    </div>
+      <span>
+        player<b>{''+player.id}</b>
+      </span>
+    </Flex>
   );
 }
-
-

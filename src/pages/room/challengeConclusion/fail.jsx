@@ -13,7 +13,6 @@ export function Fail({ owner, another, isActor,actorCharacter }) {
     <>
       <div className="success-mask">
         {background("fail")}
-
         <Flex vertical style={{ width: "100vw" }} align="center" gap={"small"}>
           {conclusionPlayerLayout(another, true, !isActor, false,actorCharacter)}
           {conclusionText(false,isActor)}
@@ -30,7 +29,7 @@ export function FailFinal({winner}){
   const [ok,setOk]=useState(false)
   return (
     <>
-      <div className="success-mask" style={ok?{display: 'none'}:null}>
+      {ok?<div className="success-mask" >
         <div
           style={{
             backgroundColor: "var(--mask-white-color)",
@@ -56,7 +55,7 @@ export function FailFinal({winner}){
             <CommonProgress  totalTime={5} isInterval={true} onOk={()=>setOk(true)} isShow={false}/>
           </Flex>
         </div>
-      </div>
+      </div>:null}
     </>
   );
 }

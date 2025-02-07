@@ -1,10 +1,9 @@
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import "./playersLayout.css";
 import { Popover, Image } from "antd";
 import { courtDeckBackgroundUrl } from "../../utls/imgUrl";
 import characterCards from "../character";
 import CardFlip from "../challengeConclusion/cardFlip";
-import { Spin } from "antd";
 
 /**
  *
@@ -73,11 +72,14 @@ export const isChallenger = (actionRecord, challengerIdArray, player) => {
 };
 
 /**
- * 行动阶段的表达的信息
+ * 行动阶段的表达的信息组件
  * @param {*} param0
  * @returns
  */
 export function ActMessage({ actionRecord, owner, players }) {
+  if(!actionRecord.character){
+    null
+  }
   //act的信息：
   let victimName = null;
   if (actionRecord.victimPlayerId > 0) {
@@ -102,7 +104,27 @@ export function ActMessage({ actionRecord, owner, players }) {
 }
 
 /**
- * 返回牌背 组件，主玩家返回手牌
+ * 阻止阶段的信息
+ * @param {object} actionRecord 
+ * @returns 
+ */
+export function BlockMessage({ actionRecord }) {
+  if(!actionRecord.victimCharacter){
+    null
+  }
+  
+  return (
+    <>
+      <p>
+        我拥有<b>{actionRecord.victimCharacter}</b>
+      </p>
+      <p>能够{actionRecord.victimBlock}</p>
+    </>
+  );
+}
+
+/**
+ * 返回牌背的组件，主玩家返回手牌
  * @param {object} player
  * @param {number} imgWidth
  * @param {string} cardFlipName  需要旋转的卡片的名称，为空则不旋转

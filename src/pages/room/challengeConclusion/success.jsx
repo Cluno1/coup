@@ -48,7 +48,7 @@ export function SuccessFinal({ winner }) {
   const [ok,setOk]=useState(false)
   return (
     <>
-      <div className="success-mask" style={ok?{display: 'none'}:null}>
+      {ok?<div className="success-mask" >
         <div
           style={{
             backgroundColor: "var(--mask-white-color)",
@@ -70,7 +70,7 @@ export function SuccessFinal({ winner }) {
             
           </Flex>
         </div>
-      </div>
+      </div>:null}
     </>
   );
 }

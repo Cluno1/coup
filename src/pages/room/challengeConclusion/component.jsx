@@ -53,7 +53,7 @@ export const background = (type = "background") => {
 };
 
 /**
- * 是否行动者 是否胜利
+ * 质疑结果的文本组件
  * isActor=true 是行动者 非是质疑者
  * isWinner=true 胜利
  * @param {boolean} isWinner
@@ -153,7 +153,7 @@ export const conclusionText = (
 };
 
 /**
- *
+ *质疑的界面组件
  * @param {object} player
  * @param {boolean} isWinner
  * @param {boolean} isActor
@@ -253,13 +253,11 @@ export const conclusionPlayerLayout = (
 
 /**
  * 进度条组件
- * 
- * nowTime 现在的时间 ,默认0
- * totalTime 总共的时间
- * isInterval 是否定时，默认false ；如果true，从nowTime-totalTime开始定时
- * onOk ok回调函数，当达到total时间时候触发
- * isShow 默认true, false为不显示
- * @param {*} param0
+ * @param {*} nowTime 现在的时间 ,默认0
+ * @param {*} totalTime 总共的时间
+ * @param {*} isInterval 是否定时，默认false ；如果true，从nowTime-totalTime开始定时
+ * @param {*} onOk ok回调函数，当达到total时间时候触发
+ * @param {*} isShow 默认true, false为不显示
  * @returns
  */
 export function CommonProgress({
@@ -313,7 +311,7 @@ export function CommonProgress({
 
   return (
     <>
-      <Flex style={isShow?null:{display:'none'}}>
+      {isShow?<Flex >
         <div>
           <Progress
             percent={percent >= 100 ? 100 : percent}
@@ -324,7 +322,7 @@ export function CommonProgress({
           />
         </div>
         <span>{showTime+'s'}</span>
-      </Flex>
+      </Flex>:null}
     </>
   );
 }
