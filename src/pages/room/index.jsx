@@ -57,7 +57,7 @@ export default function Room() {
   const [owner, setOwner] = useState({
     // 基本信息
     id: 2,
-    avatar: "https://test-1328751369.cos.ap-guangzhou.myqcloud.com/cluno.jpg", //头像
+    avatar: "https://coup-1328751369.cos.ap-guangzhou.myqcloud.com/players-avatar/coup2.jpg", //头像
     name: "Cluno",
     characterCardNum: 1,
     characterCards: [4],
@@ -74,7 +74,8 @@ export default function Room() {
 
   const player1 = {
     id: 3,
-    avatar: "https://coup-1328751369.cos.ap-guangzhou.myqcloud.com/players-avatar/coup1.jpeg", //头像
+    avatar:
+      "https://coup-1328751369.cos.ap-guangzhou.myqcloud.com/players-avatar/coup1.jpeg", //头像
     name: "james",
     characterCardNum: 1,
     characterCards: null,
@@ -90,7 +91,8 @@ export default function Room() {
   };
   const player2 = {
     id: 1,
-    avatar: "https://coup-1328751369.cos.ap-guangzhou.myqcloud.com/players-avatar/coup4.jpg", //头像
+    avatar:
+      "https://coup-1328751369.cos.ap-guangzhou.myqcloud.com/players-avatar/coup4.jpg", //头像
     name: "jason",
     characterCardNum: 1,
     characterCards: null,
@@ -106,7 +108,8 @@ export default function Room() {
   };
   const player3 = {
     id: 4,
-    avatar: "https://coup-1328751369.cos.ap-guangzhou.myqcloud.com/players-avatar/coup3.png", //头像
+    avatar:
+      "https://coup-1328751369.cos.ap-guangzhou.myqcloud.com/players-avatar/coup3.png", //头像
     name: "jerry",
     characterCardNum: 2,
     characterCards: null,
@@ -122,7 +125,8 @@ export default function Room() {
   };
   const player4 = {
     id: 5,
-    avatar: "https://coup-1328751369.cos.ap-guangzhou.myqcloud.com/players-avatar/coup2.jpg", //头像
+    avatar:
+      "https://coup-1328751369.cos.ap-guangzhou.myqcloud.com/players-avatar/coup2.jpg", //头像
     name: "tom",
     characterCardNum: 2,
     characterCards: null,
@@ -138,7 +142,7 @@ export default function Room() {
   };
   const player5 = {
     id: 6,
-    avatar: "https://test-1328751369.cos.ap-guangzhou.myqcloud.com/cluno.jpg", //头像
+    avatar: "https://coup-1328751369.cos.ap-guangzhou.myqcloud.com/players-avatar/coup1.jpeg", //头像
     name: "暴龙战士",
     characterCardNum: 2,
     characterCards: null,
@@ -154,7 +158,7 @@ export default function Room() {
   };
   const player6 = {
     id: 7,
-    avatar: "https://test-1328751369.cos.ap-guangzhou.myqcloud.com/cluno.jpg", //头像
+    avatar: "https://coup-1328751369.cos.ap-guangzhou.myqcloud.com/players-avatar/coup4.jpg", //头像
     name: "lily",
     characterCardNum: 0,
     characterCards: null,
@@ -180,7 +184,7 @@ export default function Room() {
   //后端更改    单回合对局信息
   const [actionRecord, setActionRecord] = useState({
     actionPlayerId: 3, //行动玩家id
-    period: "Act", //'Act','ActChallenge','ChallengeConclusion','Block','BlockChallenge',''ChallengeConclusion'','ActConclusion'
+    period: "ActConclusion", //'Act','ActChallenge','ChallengeConclusion','Block','BlockChallenge',''ChallengeConclusion'','ActConclusion'
     victimPlayerId: 1, //被攻击玩家id
     character: "Assassin", //行动玩家声明的角色
     actionName: "Assassinate", //行动玩家作的行动
@@ -212,6 +216,7 @@ export default function Room() {
     }
   }, [actionRecord]);
 
+  
   //返回layout
   const { playerLeft, playerMiddle, playerRight } = lMRPlayerLayout(
     players,
@@ -263,6 +268,7 @@ export default function Room() {
                 {playerLeft}
               </Flex>
             </div>
+            {/* 中间 */}
             <div style={mainCss}>
               <Flex
                 justify="center"
@@ -277,6 +283,7 @@ export default function Room() {
                 />
               </Flex>
             </div>
+
             <div>
               <Flex vertical gap={"small"}>
                 {playerRight}
@@ -284,7 +291,7 @@ export default function Room() {
             </div>
           </Flex>
         </div>
-
+        {/* 底部 */}
         <div style={footerCSS}>
           <Flex justify="center" style={{ width: "100vw" }}>
             {ownerLayout(owner, players, actionRecord, challengerIdArray)}
@@ -298,7 +305,10 @@ export default function Room() {
           )
         : null}
       {isActConclusion ? (
-        <ActConclusion actionRecord={actionRecord} players={[...players,owner]} />
+        <ActConclusion
+          actionRecord={actionRecord}
+          players={[...players, owner]}
+        />
       ) : null}
     </>
   );

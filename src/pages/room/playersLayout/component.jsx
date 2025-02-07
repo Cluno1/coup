@@ -6,9 +6,11 @@ import characterCards from "../character";
 import CardFlip from "../challengeConclusion/cardFlip";
 
 /**
- *
- * @param {*} param0
- * @returns  简单蒙版组件
+ *简单蒙版组件
+ * @param {*} playerComponent
+ * @param {*} maskString
+ * @param {*} maskColor
+ * @returns  
  */
 export function MaskComponent({
   playerComponent,

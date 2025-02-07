@@ -137,14 +137,25 @@ export default function lMRPlayerLayout(
   }
 
   /**
-   * 为每一个玩家数组（左中右）搞ui
+   * 为每一个玩家数组（左中右）界面
    * @param {Array} playersArray
    * @param {string} direction
    */
   function layout(playersArray, direction) {
     //每一个玩家的ui
     return playersArray.map((player) => {
+      
       //逻辑判断，对于该玩家
+      if(player.characterCardNum<=0){
+        return <MaskComponent
+        playerComponent={
+          <PlayerLayout player={player} imgWidth={imgWidth} />
+        }
+        maskString={'阵亡'}
+        maskColor="var(--dead-color)"
+      />
+      }
+
       if (actionRecord.actionPlayerId === player.id) {
         //该玩家是该回合行动的玩家
         //'Act','ActChallenge','ChallengeConclusion','ActConclusion','Block','BlockChallenge',''ChallengeConclusion'','BlockConclusion'

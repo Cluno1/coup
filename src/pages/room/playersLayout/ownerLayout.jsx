@@ -76,6 +76,17 @@ export default function ownerLayout(
       </Flex>
     </Flex>
   );
+  
+  //如果手牌为0,阵亡
+  if(owner.characterCardNum<=0){
+    return <MaskComponent
+    playerComponent={
+      commonLayout
+    }
+    maskString={'阵亡'}
+    maskColor="var(--dead-color)"
+  />
+  }
 
   if (actionRecord.actionPlayerId === owner.id) {
     //主玩家是行动玩家
