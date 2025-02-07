@@ -53,7 +53,14 @@ export function MessageComponent({
   );
 }
 
-//判断是否质疑者
+
+/**
+ * 判断是否是质疑者
+ * @param {*} actionRecord 
+ * @param {*} challengerIdArray 
+ * @param {*} player 
+ * @returns 
+ */
 export const isChallenger = (actionRecord, challengerIdArray, player) => {
   //如果非ActChallenge或BlockChallenge，则没有质疑者
   if (
