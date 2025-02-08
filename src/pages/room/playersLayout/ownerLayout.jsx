@@ -97,6 +97,10 @@ export default function ownerLayout(
     );
     //'Act'不用管
 
+    if(actionRecord.period==='ActConclusion'){
+      return commonLayout
+    }
+
     const message = (
       <ActMessage actionRecord={actionRecord} players={players} owner={owner} />
     );

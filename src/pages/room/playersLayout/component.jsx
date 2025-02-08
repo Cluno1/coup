@@ -208,7 +208,7 @@ export const courtDeck = (player, imgWidth, cardFlipName = "") => {
 
 /**
  * 返回可被选择的手牌
- * @param {object} owner
+ * @param {object} owner 主玩家
  * @param {number} imgWidth
  * @param {Function} onSelect
  * @returns
@@ -218,7 +218,7 @@ export function canSelectCourt(owner, imgWidth, onSelect) {
 
   const selectedCss = {
     width: `${imgWidth * 1.3}px`,
-    transform: "translateY(-20%) scale(1.3)",
+    transform: "translateY(-20%) ",
     transition: "all 0.4s ease-in-out",
   };
 

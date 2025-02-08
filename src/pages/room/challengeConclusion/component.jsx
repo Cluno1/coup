@@ -34,7 +34,7 @@ export const background = (type = "background") => {
           position: "absolute",
           width: "100vw",
           height: "var(--min-height)",
-          zIndex: -1,
+          zIndex: -10,
           overflow: "hidden",
         }}
       >
@@ -170,7 +170,7 @@ export const conclusionPlayerLayout = (
   cardFlipName = "",
   isCanSelect = false
 ) => {
-  console.log(173, isLoading, player, cardFlipName);
+  
   const [selectCard, setSelectCard] = useState(null);
 
   const handleButton = () => {

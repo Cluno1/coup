@@ -60,7 +60,7 @@ export default function Room() {
     avatar: "https://coup-1328751369.cos.ap-guangzhou.myqcloud.com/players-avatar/coup2.jpg", //头像
     name: "Cluno",
     characterCardNum: 1,
-    characterCards: [4],
+    characterCards: [5,0],
     coin: 4,
     allegiance: true, //阵营 reformist==false or loyalist==true,
     //对局信息
@@ -183,14 +183,15 @@ export default function Room() {
 
   //后端更改    单回合对局信息
   const [actionRecord, setActionRecord] = useState({
-    actionPlayerId: 3, //行动玩家id
+    actionPlayerId: 2, //行动玩家id
     period: "ActConclusion", //'Act','ActChallenge','ChallengeConclusion','Block','BlockChallenge',''ChallengeConclusion'','ActConclusion'
     victimPlayerId: 1, //被攻击玩家id
-    character: "Assassin", //行动玩家声明的角色
-    actionName: "Assassinate", //行动玩家作的行动
+    character: "Ambassador", //行动玩家声明的角色
+    actionName: "Examine", //行动玩家作的行动
     victimCharacter: "Contessa", //被攻击玩家的声明角色
     victimBlock: "Blocks Assassination", //被攻击玩家所阻止的行动
     actConclusion: true, //行动是否要成功执行
+    checkCourt:['Assassin','Ambassador'],//如果是执行交换牌或看牌的行动,该条数组里面是牌的名称
     //'ChallengeConclusion'时候需要更新质疑结果
     challengeConclusion: {
       challenger: player2, //质疑的玩家
@@ -307,7 +308,8 @@ export default function Room() {
       {isActConclusion ? (
         <ActConclusion
           actionRecord={actionRecord}
-          players={[...players, owner]}
+          players={players}
+          owner={owner}
         />
       ) : null}
     </>

@@ -157,8 +157,7 @@ export default function lMRPlayerLayout(
       }
 
       if (actionRecord.actionPlayerId === player.id) {
-        //该玩家是该回合行动的玩家
-        //'Act','ActChallenge','ChallengeConclusion','ActConclusion','Block','BlockChallenge',''ChallengeConclusion'','BlockConclusion'
+        
         const isAct = actionRecord.period === "Act";
         const mc = (
           <MaskComponent
@@ -170,7 +169,7 @@ export default function lMRPlayerLayout(
           />
         );
 
-        if (isAct) {
+        if (isAct || actionRecord.period==='ActConclusion') {
           return mc;
         }
         const message = (
