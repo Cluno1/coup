@@ -54,35 +54,48 @@ export function ActConclusion({ actionRecord, players, owner }) {
     message = (
       <>
         {isShow ? (
-          <Flex
+          <div
             className="success-mask"
-            vertical
             onClick={() => (isCanClick ? setIsShow(false) : null)}
           >
             {actionRecord.actConclusion
               ? background("success")
-              : background("fail")}
+              : background("fail")
+            }
 
-            <span
+            <Flex  
+            vertical
+            align="center"
+            justify="center"
+            style={{width:'100vw'}}
+            >
+            
+
+            <Flex
+              vertical
+              align="center"
+              justify="center"
               style={{
                 fontSize: "26px",
                 color: "white",
-                width: "100vw",
-                minHeight: "30px",
+                
               }}
             >
               <span>{name}</span>
-              <br />
+              
               <span>
                 {actionRecord.actConclusion ? "开始行动" : "行动失败"}
               </span>
-            </span>
+            </Flex>
+            
+
             <CommonProgress
               totalTime={3}
               isInterval={true}
               onOk={() => isCanClick ? setIsShow(false) : null}
             />
           </Flex>
+          </div>
         ) : null}
       </>
     );

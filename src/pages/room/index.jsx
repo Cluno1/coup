@@ -183,7 +183,7 @@ export default function Room() {
 
   //后端更改    单回合对局信息
   const [actionRecord, setActionRecord] = useState({
-    actionPlayerId: 2, //行动玩家id
+    actionPlayerId: 3, //行动玩家id
     period: "ActConclusion", //'Act','ActChallenge','ChallengeConclusion','Block','BlockChallenge',''ChallengeConclusion'','ActConclusion'
     victimPlayerId: 1, //被攻击玩家id
     character: "Ambassador", //行动玩家声明的角色
