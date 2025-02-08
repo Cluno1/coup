@@ -59,7 +59,7 @@ export default function Room() {
     id: 2,
     avatar: "https://coup-1328751369.cos.ap-guangzhou.myqcloud.com/players-avatar/coup2.jpg", //头像
     name: "Cluno",
-    characterCardNum: 1,
+    characterCardNum: 2,
     characterCards: [5,0],
     coin: 4,
     allegiance: true, //阵营 reformist==false or loyalist==true,
@@ -184,7 +184,7 @@ export default function Room() {
   //后端更改    单回合对局信息
   const [actionRecord, setActionRecord] = useState({
     actionPlayerId: 3, //行动玩家id
-    period: "ActConclusion", //'Act','ActChallenge','ChallengeConclusion','Block','BlockChallenge',''ChallengeConclusion'','ActConclusion'
+    period: "Act", //'Act','ActChallenge','ChallengeConclusion','Block','BlockChallenge',''ChallengeConclusion'','ActConclusion'
     victimPlayerId: 1, //被攻击玩家id
     character: "Ambassador", //行动玩家声明的角色
     actionName: "Examine", //行动玩家作的行动

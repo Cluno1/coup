@@ -37,7 +37,7 @@ export default function ownerLayout(
   challengerIdArray
 ) {
   const cards = owner.characterCards.map((cardIndex, index) => {
-    if (cardIndex > 0) {
+    if (cardIndex >= 0) {
       return (
         <Flex vertical align="center" justify="center" key={index}>
           <Image
