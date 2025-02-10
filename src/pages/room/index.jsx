@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Flex } from "antd";
-import FullScreenComponent from "../utls/fullScreen";
+import FullScreenComponent from "../utl/fullScreen";
 import MainContent from "./button/mainContent";
 import lMRPlayerLayout from "./playersLayout/playersLayout";
 import ownerLayout from "./playersLayout/ownerLayout";

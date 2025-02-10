@@ -3,6 +3,8 @@ import { UserOutlined, KeyOutlined } from "@ant-design/icons";
 import { Button } from "antd/es";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import api from "./utl/api/api";
 function Register() {
     //路由
     const navigate = useNavigate()
@@ -33,9 +35,15 @@ function Register() {
             setRePassword(e.target.value)
     }
 
-    function submit(){
+    async function submit(){
         if(password===rePassword){
             //进行注册
+            const re=await api.register({account,password})
+            
+            if(!re?.code){
+              //跳转
+              navigate("/home", { state: { user:re } });
+            }
         }else{
             setRePassword('')
             setConfirm(false)

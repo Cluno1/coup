@@ -4,6 +4,6 @@
 }
 
 .full-screen {
-  min-height: var(--min-height);
-  min-width: var(--min-width);
+  width: 100%;
+  height: var(--min-height);
 }

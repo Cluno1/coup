@@ -1,5 +1,5 @@
 import { Button, Flex, Progress } from "antd";
-import { backgroundUrl } from "../../utls/imgUrl";
+import { backgroundUrl } from "../../utl/imgUrl";
 import "./challengeConclusion.css";
 import { Divider } from "antd";
 import { canSelectCourt, courtDeck } from "../playersLayout/component";
@@ -26,8 +26,8 @@ export const background = (type = "background") => {
     case "challenging":
       url = backgroundUrl.challengingUrl;
       break;
-    case 'gameOver':
-      url= backgroundUrl.gameOverUrl;
+    case "gameOver":
+      url = backgroundUrl.gameOverUrl;
       break;
   }
   return (
@@ -173,7 +173,6 @@ export const conclusionPlayerLayout = (
   cardFlipName = "",
   isCanSelect = false
 ) => {
-  
   const [selectCard, setSelectCard] = useState(null);
 
   const handleButton = () => {
@@ -267,18 +266,15 @@ export function CommonProgress({
   nowTime = 0,
   totalTime = 0,
   isInterval = false,
-  onOk=()=>{},
-  isShow=true,
+  onOk = () => {},
+  isShow = true,
 }) {
   const [percent, setPercent] = useState(nowTime / totalTime);
-  
-  const [showTime, setShowTime] = useState(nowTime);
 
- 
+  const [showTime, setShowTime] = useState(nowTime);
 
   useEffect(() => {
     if (isInterval) {
-      
       const startTime = performance.now();
       // const endTime = startTime + totalTime * 1000;
 
@@ -288,17 +284,14 @@ export function CommonProgress({
         const newTime = elapsed / 1000;
         const newPercent = (newTime / totalTime) * 100;
 
-        
         setPercent(newPercent);
         setShowTime(Math.floor(newTime));
 
-        if(newTime>=totalTime){
-          
-          onOk()
+        if (newTime >= totalTime) {
+          onOk();
         }
-          const nextTick = 10 - ((currentTime - startTime) % 10);
-          setTimeout(step, nextTick);
-        
+        const nextTick = 10 - ((currentTime - startTime) % 10);
+        setTimeout(step, nextTick);
       };
 
       step();
@@ -310,22 +303,22 @@ export function CommonProgress({
     to: "red",
   };
 
-  
-
   return (
     <>
-      {isShow?<Flex >
-        <div>
-          <Progress
-            percent={percent >= 100 ? 100 : percent}
-            showInfo={false}
-            size={[600, 5]}
-            strokeColor={conicColors}
-            status="active"
-          />
-        </div>
-        <span>{showTime+'s'}</span>
-      </Flex>:null}
+      {isShow ? (
+        <Flex>
+          <div>
+            <Progress
+              percent={percent >= 100 ? 100 : percent}
+              showInfo={false}
+              size={[600, 5]}
+              strokeColor={conicColors}
+              status="active"
+            />
+          </div>
+          <span>{showTime + "s"}</span>
+        </Flex>
+      ) : null}
     </>
   );
 }

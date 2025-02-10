@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Card } from "antd";
 
 import "./cardFlip.css";
-import { courtDeckBackgroundUrl } from "../../utls/imgUrl";
+import { courtDeckBackgroundUrl } from "../../utl/imgUrl";
 
 const CardFlip = ({
   frontCardImg,

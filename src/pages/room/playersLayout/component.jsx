@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./playersLayout.css";
 import { Popover, Image } from "antd";
-import { courtDeckBackgroundUrl } from "../../utls/imgUrl";
+import { courtDeckBackgroundUrl } from "../../utl/imgUrl";
 import characterCards from "../character";
 import CardFlip from "../challengeConclusion/cardFlip";
 
@@ -10,7 +10,7 @@ import CardFlip from "../challengeConclusion/cardFlip";
  * @param {*} playerComponent
  * @param {*} maskString
  * @param {*} maskColor
- * @returns  
+ * @returns
  */
 export function MaskComponent({
   playerComponent,
@@ -53,13 +53,12 @@ export function MessageComponent({
   );
 }
 
-
 /**
  * 判断是否是质疑者
- * @param {*} actionRecord 
- * @param {*} challengerIdArray 
- * @param {*} player 
- * @returns 
+ * @param {*} actionRecord
+ * @param {*} challengerIdArray
+ * @param {*} player
+ * @returns
  */
 export const isChallenger = (actionRecord, challengerIdArray, player) => {
   //如果非ActChallenge或BlockChallenge，则没有质疑者
@@ -86,8 +85,8 @@ export const isChallenger = (actionRecord, challengerIdArray, player) => {
  * @returns
  */
 export function ActMessage({ actionRecord, owner, players }) {
-  if(!actionRecord.character){
-    null
+  if (!actionRecord.character) {
+    null;
   }
   //act的信息：
   let victimName = null;
@@ -114,14 +113,14 @@ export function ActMessage({ actionRecord, owner, players }) {
 
 /**
  * 阻止阶段的信息
- * @param {object} actionRecord 
- * @returns 
+ * @param {object} actionRecord
+ * @returns
  */
 export function BlockMessage({ actionRecord }) {
-  if(!actionRecord.victimCharacter){
-    null
+  if (!actionRecord.victimCharacter) {
+    null;
   }
-  
+
   return (
     <>
       <p>
@@ -140,20 +139,18 @@ export function BlockMessage({ actionRecord }) {
  * @returns
  */
 export const courtDeck = (player, imgWidth, cardFlipName = "") => {
-  
   let flipCardUrl = null;
   if (cardFlipName) {
-    
     characterCards.forEach((c) => {
       if (cardFlipName === c.name) {
         flipCardUrl = c.img;
       }
     });
   }
-  
 
-  if (player.characterCards) {//是主玩家，展示主玩家的牌
-    
+  if (player.characterCards) {
+    //是主玩家，展示主玩家的牌
+
     const cards = player.characterCards.map((cardIndex) => {
       if (cardIndex > 0) {
         if (flipCardUrl === characterCards[cardIndex].img) {
@@ -179,9 +176,8 @@ export const courtDeck = (player, imgWidth, cardFlipName = "") => {
     return cards;
   }
 
-  
   let courtDeck = [];
-  
+
   for (let i = 0; i < player.characterCardNum; i++) {
     if (flipCardUrl) {
       courtDeck.push(
