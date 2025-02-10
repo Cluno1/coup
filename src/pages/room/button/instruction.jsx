@@ -3,7 +3,7 @@ import { Drawer, Button, Table } from "antd";
 import { Flex } from "antd";
 import { CloseCircleOutlined, LineOutlined } from "@ant-design/icons";
 import characterCards, { commonActions } from "../character";
-import "../room.css";
+
 
 
 /**

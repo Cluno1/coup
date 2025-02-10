@@ -78,7 +78,7 @@ export default function ownerLayout(
   );
   
   //如果手牌为0,阵亡
-  if(owner.characterCardNum<=0){
+  if(owner.characterCardNum<=0||owner.isDead){
     return <MaskComponent
     playerComponent={
       commonLayout

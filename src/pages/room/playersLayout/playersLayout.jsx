@@ -146,7 +146,7 @@ export default function lMRPlayerLayout(
     return playersArray.map((player) => {
       
       //逻辑判断，对于该玩家
-      if(player.characterCardNum<=0){
+      if(player.characterCardNum<=0||player.isDead){
         return <MaskComponent
         playerComponent={
           <PlayerLayout player={player} imgWidth={imgWidth} />

@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 /**
  *返回适应屏幕大小的背景图片
- * @param {string} type  'success' | 'fail' | 'background' | 'challenging'
+ * @param {string} type  'success' | 'fail' | 'background' | 'challenging'|'gameOver'
  * @returns
  */
 export const background = (type = "background") => {
@@ -25,6 +25,9 @@ export const background = (type = "background") => {
       break;
     case "challenging":
       url = backgroundUrl.challengingUrl;
+      break;
+    case 'gameOver':
+      url= backgroundUrl.gameOverUrl;
       break;
   }
   return (

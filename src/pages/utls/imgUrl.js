@@ -38,4 +38,6 @@ export const backgroundUrl = {
     "https://coup-1328751369.cos.ap-guangzhou.myqcloud.com/background/challenging.jpg",
   backgroundUrl:
     "https://coup-1328751369.cos.ap-guangzhou.myqcloud.com/background/bg.jpg",
+  gameOverUrl:
+    'https://coup-1328751369.cos.ap-guangzhou.myqcloud.com/background/gameover.jpg',
 };

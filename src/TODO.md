@@ -1,5 +1,18 @@
   # 后端待做：
 
+### 房间信息
+    const [roomBase, setRoomBase] = useState({
+    playerNum: 6, //玩家人数
+    time: "3:20",
+    round: 5, //第几回合
+    treasuryReserve: 3, //国库里的金币数量
+    courtDeckNum: 15, //牌数
+    courtDeck: [2, 2, 2, 2, 2, 5], //牌堆牌数
+
+    gameOver: false, //是否游戏结束
+    winnerId: 1,
+    });
+    
 ### 角色信息
     const Inquisitor={
         img:'https://coup-1328751369.cos.ap-guangzhou.myqcloud.com/role/inquisitor.jpg',

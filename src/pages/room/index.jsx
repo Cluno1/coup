@@ -7,60 +7,35 @@ import ownerLayout from "./playersLayout/ownerLayout";
 import challengeConclusion from "./challengeConclusion";
 import { background } from "./challengeConclusion/component";
 import { ActConclusion } from "./actConclusion";
+import { GameOver } from "./gameOver";
 
 export default function Room() {
   //后端更改   房间信息
   const [roomBase, setRoomBase] = useState({
-    playerNum: 3, //玩家人数
+    playerNum: 6, //玩家人数
     time: "3:20",
-    round: 2, //第几回合
+    round: 5, //第几回合
     treasuryReserve: 3, //国库里的金币数量
     courtDeckNum: 15, //牌数
     courtDeck: [2, 2, 2, 2, 2, 5], //牌堆牌数
+
+    gameOver: true, //是否游戏结束
+    winnerId: 1,
   });
-
-  /*useEffect(() => {
-    const interval = setInterval(() => {
-      // 使用函数式更新来确保我们总是基于最新的state进行更新
-      setActionRecord(prevState => {
-        // 根据当前period的值来决定下一个period的值
-        const newPeriod = prevState.period === 'Act' ? 'ActChallenge' : 'Act';
-        
-        // 返回新的actionRecord对象，只更新period属性
-        return { ...prevState, period: newPeriod };
-        
-      });
-    }, 5000);
-
-    // 清除定时器
-    return () => clearInterval(interval);
-  }, []); // 空依赖数组表示这个effect只在组件挂载时运行一次*/
 
   //后端更改   单回合提出质疑的玩家的id
   const [challengerIdArray, setChallengerIdArray] = useState([2, 4]);
 
   //2-10 人
 
-  //维护的数据
-  // const owner={
-  //   // 基本信息
-  //   id:2,
-  //   avatar:'https://test-1328751369.cos.ap-guangzhou.myqcloud.com/cluno.jpg',//头像
-  //   name:'cluno',
-  //   characterCardNum:2,
-  //   characterCards:[1,3],
-  //   coin:4,
-  //   allegiance:true,//reformist==false or loyalist==true,
-  //   //对局信息
-  //   isDead:false,
-  // }
   const [owner, setOwner] = useState({
     // 基本信息
     id: 2,
-    avatar: "https://coup-1328751369.cos.ap-guangzhou.myqcloud.com/players-avatar/coup2.jpg", //头像
+    avatar:
+      "https://coup-1328751369.cos.ap-guangzhou.myqcloud.com/players-avatar/coup2.jpg", //头像
     name: "Cluno",
     characterCardNum: 2,
-    characterCards: [5,0],
+    characterCards: [5, 0],
     coin: 4,
     allegiance: true, //阵营 reformist==false or loyalist==true,
     //对局信息
@@ -77,7 +52,7 @@ export default function Room() {
     avatar:
       "https://coup-1328751369.cos.ap-guangzhou.myqcloud.com/players-avatar/coup1.jpeg", //头像
     name: "james",
-    characterCardNum: 1,
+    characterCardNum: 0,
     characterCards: null,
     coin: 2,
     allegiance: true,
@@ -94,7 +69,7 @@ export default function Room() {
     avatar:
       "https://coup-1328751369.cos.ap-guangzhou.myqcloud.com/players-avatar/coup4.jpg", //头像
     name: "jason",
-    characterCardNum: 1,
+    characterCardNum: 0,
     characterCards: null,
     coin: 2,
     allegiance: false,
@@ -111,7 +86,7 @@ export default function Room() {
     avatar:
       "https://coup-1328751369.cos.ap-guangzhou.myqcloud.com/players-avatar/coup3.png", //头像
     name: "jerry",
-    characterCardNum: 2,
+    characterCardNum: 0,
     characterCards: null,
     coin: 8,
     allegiance: true,
@@ -128,7 +103,7 @@ export default function Room() {
     avatar:
       "https://coup-1328751369.cos.ap-guangzhou.myqcloud.com/players-avatar/coup2.jpg", //头像
     name: "tom",
-    characterCardNum: 2,
+    characterCardNum: 0,
     characterCards: null,
     coin: 8,
     allegiance: true,
@@ -142,9 +117,10 @@ export default function Room() {
   };
   const player5 = {
     id: 6,
-    avatar: "https://coup-1328751369.cos.ap-guangzhou.myqcloud.com/players-avatar/coup1.jpeg", //头像
+    avatar:
+      "https://coup-1328751369.cos.ap-guangzhou.myqcloud.com/players-avatar/coup1.jpeg", //头像
     name: "暴龙战士",
-    characterCardNum: 2,
+    characterCardNum: 0,
     characterCards: null,
     coin: 8,
     allegiance: true,
@@ -158,7 +134,8 @@ export default function Room() {
   };
   const player6 = {
     id: 7,
-    avatar: "https://coup-1328751369.cos.ap-guangzhou.myqcloud.com/players-avatar/coup4.jpg", //头像
+    avatar:
+      "https://coup-1328751369.cos.ap-guangzhou.myqcloud.com/players-avatar/coup4.jpg", //头像
     name: "lily",
     characterCardNum: 0,
     characterCards: null,
@@ -172,6 +149,7 @@ export default function Room() {
     assistsKilledId: 1, // 被助攻杀的人的id，即被人砍半条命的人的id
     Killed: 1, //被最后一击的人的id
   };
+
   const [players, setPlayer] = useState([
     player1,
     player2,
@@ -191,7 +169,7 @@ export default function Room() {
     victimCharacter: "Contessa", //被攻击玩家的声明角色
     victimBlock: "Blocks Assassination", //被攻击玩家所阻止的行动
     actConclusion: true, //行动是否要成功执行
-    checkCourt:['Assassin','Ambassador'],//如果是执行交换牌或看牌的行动,该条数组里面是牌的名称
+    checkCourt: ["Assassin", "Ambassador"], //如果是执行交换牌或看牌的行动,该条数组里面是牌的名称
     //'ChallengeConclusion'时候需要更新质疑结果
     challengeConclusion: {
       challenger: player2, //质疑的玩家
@@ -205,7 +183,8 @@ export default function Room() {
   const [isChallengeConclusion, setIsChallengeConclusion] = useState(false);
   //判断进入ActConclusion函数
   const [isActConclusion, setIsActConclusion] = useState(false);
-  //进入conclusion
+
+  //进入conclusion或ActConclusion阶段
   useEffect(() => {
     setIsChallengeConclusion(false);
     setIsActConclusion(false);
@@ -217,8 +196,13 @@ export default function Room() {
     }
   }, [actionRecord]);
 
-  
-  //返回layout
+  //进入game over阶段
+  const [isGameOver, setIsGameOver] = useState(false);
+  useEffect(() => {
+    setIsGameOver(roomBase.gameOver);
+  }, [roomBase.gameOver]);
+
+  //返回players的layout数组
   const { playerLeft, playerMiddle, playerRight } = lMRPlayerLayout(
     players,
     owner,
@@ -311,6 +295,9 @@ export default function Room() {
           players={players}
           owner={owner}
         />
+      ) : null}
+      {isGameOver ? (
+        <GameOver roomBase={roomBase} players={players} owner={owner} />
       ) : null}
     </>
   );
