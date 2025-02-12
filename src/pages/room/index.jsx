@@ -10,6 +10,7 @@ import { ActConclusion } from "./actConclusion";
 import { GameOver } from "./gameOver";
 
 export default function Room() {
+  
   //后端更改   房间信息
   const [roomBase, setRoomBase] = useState({
     playerNum: 6, //玩家人数

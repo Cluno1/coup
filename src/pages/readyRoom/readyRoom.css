@@ -6,4 +6,23 @@
 .player {
     width: 100px;
     min-height: 50px;
+    border-radius: 5px;
+}
+
+.footer {
+    width: 100vw;
+    position: absolute;
+    bottom: 0;
+    padding: 10px;
+}
+.room-message {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: var(--ready-color);
+    margin-top: 4rem;
+    margin-right: 10px;
+
 }

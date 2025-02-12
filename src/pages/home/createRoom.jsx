@@ -48,7 +48,9 @@ export default function CreateRoom(props) {
       password,
       owner: { name, avatar, user_rank },
     });
+
     if (room) {
+      room.password = password; //后端返回的房间是没有密码的，把这个密码加上
       //socket 连接
       socket.connect();
       socket.emit("joinRoom", {
@@ -56,17 +58,19 @@ export default function CreateRoom(props) {
         player: { name, avatar, user_rank },
       });
       // 监听服务器发送的 playerJoined 消息
-      socket.on("playerJoined", (players) => {
-        console.log("Player joined:", players);
+      socket.on("playerJoined", (data) => {
+        console.log("Player joined:", data.players);
 
         //navigate("/home", { state: { user } });
-        navigate("/readyRoom", { state: { players } });
+        navigate("/readyRoom", {
+          state: { players: data.players, room, user },
+        });
       });
       // 监听服务器发送的 failAddInRoom 消息
-      socket.on("failAddInRoom", (error) => {
+      socket.on("joinRoomFail", (error) => {
         console.error("Failed to join the room:", error);
         // 这里可以处理加入房间失败的逻辑，比如显示错误消息等
-        alert("Failed to join the room");
+        alert(error);
         socket.disconnect();
       });
     }

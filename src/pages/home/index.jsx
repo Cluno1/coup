@@ -95,7 +95,7 @@ user_rank:"gold"
         }}
       >
         <Dropdown menu={{ items }} placement="bottomRight">
-          <Flex vertical>
+          <Flex vertical align="center" justify="center">
             <Avatar size={64} src={user?.avatar} icon={<UserOutlined />} />
             <span>{user?.name}</span>
           </Flex>
