@@ -6,6 +6,8 @@ import Register from "./pages/register";
 import Home from "./pages/home";
 import Room from "./pages/room";
 import Test from "./pages/test";
+import { ReadyRoom } from "./pages/readyRoom";
+import { SocketProvider } from "./pages/utl/socketContext";
 
 function App() {
   function adjustHeight() {
@@ -30,14 +32,17 @@ function App() {
   adjustWidth();
 
   return (
-    <div className="App">
+    <div>
+      <SocketProvider>
       <Routes>
         <Route path="/login" element={<Login />} /> //用法
         <Route path="/register" element={<Register />} />
         <Route path="/home" element={<Home />} />
         <Route path="/room" element={<Room />} />
         <Route path="/test" element={<Test />} />
+        <Route path="/readyRoom" element={<ReadyRoom />} />
       </Routes>
+      </SocketProvider>
     </div>
   );
 }

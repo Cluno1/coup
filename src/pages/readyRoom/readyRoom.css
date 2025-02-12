@@ -1,0 +1,9 @@
+:root {
+    --ready-color : rgb(163, 163, 237);
+    --unready-color: rgb(233, 137, 137);
+}
+
+.player {
+    width: 100px;
+    min-height: 50px;
+}

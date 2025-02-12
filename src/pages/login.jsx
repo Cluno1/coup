@@ -31,11 +31,10 @@ function Login() {
 
   async function submit() {
     if (account && password) {
-      let re = await api.login({ account, password });
-      
-      if (!re?.code) {
+      let user = await api.login({ account, password });
+      if (!user?.code) {
         //进行登录
-        navigate("/home", { state: { user:re } });
+        navigate("/home", { state: { user } });
       }
     }
   }

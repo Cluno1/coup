@@ -1,3 +1,5 @@
 
-export const baseURL='http://192.168.249.77:3000/user'
+export const baseURL='http://localhost:3000'
+
+export const webSocketUrl=baseURL+'/room'
 

@@ -14,7 +14,7 @@ const apiClient = axios.create({
 export default {
   async register(user) {
     try{
-      let re=await apiClient.post('/register',user);
+      let re=await apiClient.post('/user/register',user);
       
       if(re.data.code===200){
         return re.data.data
@@ -34,7 +34,7 @@ export default {
 
   async login(user) {
     try{
-      let re=await apiClient.post('/login',user);
+      let re=await apiClient.post('/user/login',user);
       if(re.data.code===200){
         return re.data.data.user
       }else{
@@ -49,8 +49,53 @@ export default {
       return err.response.data
     }
     
-    
-    
+  },
+
+  /**
+   * roomName: string;
+  playerCount: number;
+  isPublic: boolean;
+  password: string | null;
+  owner: {name: string;
+  avatar: string;
+  user_rank: string;};
+   * @returns 
+   */
+  async createRoom(data){
+    try{
+      let re=await apiClient.post('/room/createRoom',data);
+      if(re.data.code===200){
+        console.log(re);
+        return re.data.data.room
+      }else{
+        alert('其他错误')
+        console.log(re);
+        return []
+      }
+
+    }catch(err){
+      console.log(err)
+      return []
+    }
+  },
+
+  async getRoomList(){
+    try{
+      let re=await apiClient.get('/room/roomList');
+      
+      if(re.data.code===200){
+        
+        return re.data.data.roomList
+      }else{
+        alert('其他错误')
+        console.log(re);
+      }
+
+    }catch(err){
+      console.log(err,'err')
+      return []
+      
+    }
   },
   
 };
