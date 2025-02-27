@@ -6,6 +6,7 @@ import { Drawer } from "antd";
 import api from "../utl/api/api";
 import { useSocket } from "../utl/socketContext";
 import { useNavigate } from "react-router-dom";
+import { clientMessage, serverMessage } from "../utl/socket.message";
 
 export default function GameLobby({ isOpen, setIsOpen, user }) {
   useEffect(() => {
@@ -28,19 +29,20 @@ export default function GameLobby({ isOpen, setIsOpen, user }) {
   ({ name, avatar, user_rank } = user);
 
   const handleRoomClick = (room) => {
-    
+    console.log("click --32");
     setPasswordConfirm(true);
-    if (!room.isPublic&&!visible) {
+    if (!room.isPublic && !visible) {
       setVisible(true);
     } else {
-      room.password=inputPassword;
+      room.password = inputPassword;
+      
       socket.connect();
-      socket.emit("joinRoom", {
+      socket.emit(serverMessage.joinRoom, {
         room: room,
         player: { name, avatar, user_rank },
       });
       // 监听服务器发送的 playerJoined 消息
-      socket.on("playerJoined", (data) => {
+      socket.on(clientMessage.playerJoined, (data) => {
         console.log("Player joined:", data.players);
 
         setPasswordConfirm(true);
@@ -54,6 +56,13 @@ export default function GameLobby({ isOpen, setIsOpen, user }) {
       // 监听服务器发送的 fail 消息
       socket.on("joinRoomFail", (error) => {
         console.error("Failed to join the room:", error);
+        // 这里可以处理加入房间失败的逻辑，比如显示错误消息等
+        alert(error);
+        setPasswordConfirm(false);
+        socket.disconnect();
+      });
+      socket.on(clientMessage.roomIsFull, (error) => {
+        console.error("room is full:", error);
         // 这里可以处理加入房间失败的逻辑，比如显示错误消息等
         alert(error);
         setPasswordConfirm(false);
@@ -94,10 +103,10 @@ export default function GameLobby({ isOpen, setIsOpen, user }) {
         key="top" //位置
       >
         {rooms.length > 0 ? (
-          rooms.map((room,index) => (
+          rooms.map((room, index) => (
             <>
               <Card
-                key={'card'+index}
+                key={"card" + index}
                 title={room.roomName}
                 style={{
                   width: 300,
@@ -112,7 +121,7 @@ export default function GameLobby({ isOpen, setIsOpen, user }) {
                 {!room.isPublic && <LockOutlined />}
               </Card>
               <Modal
-                key={'modal'+index}
+                key={"modal" + index}
                 title="输入密码"
                 open={visible}
                 onOk={() => handleRoomClick(room)}

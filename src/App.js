@@ -8,6 +8,7 @@ import Room from "./pages/room";
 import Test from "./pages/test";
 import { ReadyRoom } from "./pages/readyRoom";
 import { SocketProvider } from "./pages/utl/socketContext";
+import { Error } from "./pages/failPage/error";
 
 function App() {
   function adjustHeight() {
@@ -41,6 +42,7 @@ function App() {
         <Route path="/room" element={<Room />} />
         <Route path="/test" element={<Test />} />
         <Route path="/readyRoom" element={<ReadyRoom />} />
+        <Route path="/error" element={<Error />} />
       </Routes>
       </SocketProvider>
     </div>

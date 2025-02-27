@@ -103,7 +103,7 @@ const FullScreenComponent = () => {
 
   return (
     <div>
-      {isFullscreen ? null : topFullScreen}
+      {/* {isFullscreen ? null : topFullScreen} */}
 
       <Button size={"large"} onClick={handleFullScreen}>
         {isFullscreen ? <RotateLeftOutlined /> : "全屏"}

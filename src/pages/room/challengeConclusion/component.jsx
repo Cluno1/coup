@@ -5,6 +5,9 @@ import { Divider } from "antd";
 import { canSelectCourt, courtDeck } from "../playersLayout/component";
 import { Spin } from "antd";
 import { useEffect, useState } from "react";
+import { useSocket } from "../../utl/socketContext";
+import { serverMessage } from "../../utl/socket.message";
+import characterCards from "../character";
 
 /**
  *返回适应屏幕大小的背景图片
@@ -82,7 +85,7 @@ export const conclusionText = (
         width: "100vw",
       }}
     >
-      <Flex vertical>
+      <Flex vertical align="center">
         <Divider
           orientation="left"
           orientationMargin="200"
@@ -154,6 +157,36 @@ export const conclusionText = (
     </div>
   );
 };
+/**
+ * 行动是coup或刺杀的结果阶段的文本组件
+ * @param {boolean} isWinner
+ * @param {boolean} isSpectator  是否是旁观者
+ * @returns
+ */
+export const ActConclusionText = (isWinner, isSpectator = false) => {
+  //是否行动者 是否胜利
+
+  //isActor=true 是行动者 非是质疑者
+  //isWinner=true 胜利
+  return (
+    <div
+      style={{
+        backgroundColor: "var(--mask-white-color)",
+        width: "100vw",
+      }}
+    >
+      <Flex vertical align="center">
+        <span>
+          {isSpectator
+            ? "YOUARESPECTATOR!"
+            : isWinner
+            ? "YOUAREWIN!"
+            : "YOUAREDEAD!"}
+        </span>
+      </Flex>
+    </div>
+  );
+};
 
 /**
  *质疑的界面组件
@@ -171,13 +204,19 @@ export const conclusionPlayerLayout = (
   isActor,
   isLoading = false,
   cardFlipName = "",
-  isCanSelect = false
+  isCanSelect = false,
+  roomId = ""
 ) => {
   const [selectCard, setSelectCard] = useState(null);
-
+  const socket = useSocket();
   const handleButton = () => {
     //TODO
-    console.log("todo 传到后端删除");
+
+    socket.emit(serverMessage.challengeKilled, {
+      playerId: player.id,
+      roomId: roomId,
+      character: characterCards[selectCard].name,
+    });
   };
 
   const button = (
@@ -244,6 +283,111 @@ export const conclusionPlayerLayout = (
 
             <span>
               coin: <b>{player.coin}</b>
+            </span>
+          </Flex>
+          {isCanSelect ? button : null}
+        </Flex>
+      </div>
+    </>
+  );
+};
+
+/**
+ *行动是coup或刺杀的行动结算界面组件
+ * @param {object} player
+ * @param {boolean} isWinner
+ * @param {boolean} isActor
+ * @param {boolean} isLoading   手牌是否是加载中的状态
+ * @param {string} cardFlipName     角色名称,让一张手牌旋转
+ * @param {boolean} isCanSelect     是否是可以被选择的卡片，即被选择后可以被传到后端删除
+ * @param {string} roomId
+ * @returns
+ */
+export const ActConclusionPlayerLayout = (
+  player,
+  isWinner,
+  isActor,
+  isLoading = false,
+  cardFlipName = "",
+  isCanSelect = false,
+  roomId = ""
+) => {
+  if (!player) {
+    return null;
+  }
+  const [selectCard, setSelectCard] = useState(null);
+  const socket = useSocket();
+  const handleButton = () => {
+    socket.emit(serverMessage.coupOrAssassinateConclusion, {
+      roomId: roomId,
+      character: characterCards[selectCard].name,
+    });
+  };
+
+  const button = (
+    <>
+      <Divider
+        type="vertical"
+        style={{ borderColor: "black", height: "60px" }}
+      />
+      <Button
+        type="primary"
+        disabled={selectCard ? false : true}
+        onClick={handleButton}
+        style={{ color: "white" }}
+      >
+        丢弃
+      </Button>
+    </>
+  );
+
+  return (
+    <>
+      <div style={{ color: "white" }}>
+        <Flex gap={"small"} justify="center" align="center">
+          <img
+            src={player?.avatar}
+            style={{
+              width: "50px",
+            }}
+          />
+
+          <Flex vertical>
+            <p>
+              <span
+                style={
+                  !isWinner
+                    ? {
+                        color: "var(--fail-color)",
+                      }
+                    : {
+                        color: "var(--success-color)",
+                      }
+                }
+              >
+                {!isActor ? "受击者:" : "行动者:"}
+              </span>
+              <br />
+              {player?.name}
+            </p>
+          </Flex>
+          <Divider
+            type="vertical"
+            style={{ borderColor: "black", height: "60px" }}
+          />
+
+          <Flex vertical gap={"small"}>
+            <Spin spinning={isLoading}>
+              <Flex gap="middle">
+                {isCanSelect
+                  ? canSelectCourt(player, 50, setSelectCard)
+                  : courtDeck(player, 30, cardFlipName)}
+                <div style={cardFlipName ? { height: "30px" } : {}}></div>
+              </Flex>
+            </Spin>
+
+            <span>
+              coin: <b>{player?.coin}</b>
             </span>
           </Flex>
           {isCanSelect ? button : null}

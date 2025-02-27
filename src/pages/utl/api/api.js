@@ -26,7 +26,7 @@ export default {
       }
 
     }catch(err){
-      alert(err.response.data.message)
+      console.error(err)
       return err.response.data
     }
     

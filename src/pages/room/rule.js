@@ -45,6 +45,7 @@ function getRandomCardsIndex(courtDeck) {
       allegiance:true,//reformist==false or loyalist==true
       
     } */
+  
   export function income(player){
     player.coin++;
   }

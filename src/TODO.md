@@ -90,3 +90,8 @@
   - case: 如果那个人放弃势力后死亡,更新player,手牌降为0
 
 -  ActConclusion  返回更新好的player
+
+## tips
+
+独吞 被人质疑 有男爵 
+外援 被人阻止 别人说有男爵

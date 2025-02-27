@@ -44,39 +44,37 @@ export default function lMRPlayerLayout(
 ) {
   // 辅助函数来检查数组是否已经是最终形式
   function judge(players, ownerId) {
-    function isAlreadyInLayout(players, ownerId) {
-      for (let i = 0; i < players.length - 1; i++) {
-        if (players[i] < ownerId) {
-          if (players[i + 1] < ownerId) {
-            if (players[i] > players[i + 1]) {
-              continue;
-            } else {
-              return false;
-            }
-          }
-        } else {
-          if (players[i] > players[i + 1]) {
-            continue;
-          } else {
-            return false;
-          }
-        }
-      }
+    // function isAlreadyInLayout(players, ownerId) {
+    //   for (let i = 0; i < players.length - 1; i++) {
+    //     if (players[i] < ownerId) {
+    //       if (players[i + 1] < ownerId) {
+    //         if (players[i] > players[i + 1]) {
+    //           continue;
+    //         } else {
+    //           return false;
+    //         }
+    //       }
+    //     } else {
+    //       if (players[i] > players[i + 1]) {
+    //         continue;
+    //       } else {
+    //         return false;
+    //       }
+    //     }
+    //   }
 
-      return true;
-    }
+    //   return true;
+    // }
 
-    // 如果数组已经是最终形式，直接返回
-    if (isAlreadyInLayout(players, ownerId)) {
-      return players;
-    }
+    // // 如果数组已经是最终形式，直接返回
+    // if (isAlreadyInLayout(players, ownerId)) {
+    //   return players;
+    // }
 
     // 进行排序
     const sortedPlayers = players.sort((a, b) => b.id - a.id);
-
     // 使用一次遍历来分割数组，并直接构建最终数组
     let index = sortedPlayers.findIndex((player) => player.id <= ownerId);
-
     if (index === -1) {
       // 所有player的id都大于ownerId
       return sortedPlayers;
@@ -90,19 +88,21 @@ export default function lMRPlayerLayout(
       return [...lower, ...higher];
     }
   }
-  player = judge(player, owner.id);
+
+  const judgePlayer = judge(player, owner.id);
 
   //图片宽度
   let imgWidth = 120;
   if (player.length <= 3 && player.length > 1) {
     imgWidth = imgWidth / 2;
   } else if (player.length == 1) {
+    imgWidth=100;
   } else {
     imgWidth = imgWidth / 3;
   }
 
-  const players = [...player];
-  const playersTemp = player;
+  const players = [...judgePlayer];
+  const playersTemp = judgePlayer;
   //分别按照逆时针顺序排序好左中右数组
   let playerLeft = [];
   let playerMiddle = [];

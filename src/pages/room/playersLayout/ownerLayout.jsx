@@ -12,16 +12,6 @@ import {
   MessageComponent,
 } from "./component";
 
-/**const owner={
-    id:2,
-    img:'/public/logo192.png',
-    name:'cluno',
-    characterCardNum:2,
-    characterCards:[1,3],
-    coin:4,
-    allegiance:true,//reformist==false or loyalist==true
-  }  */
-
 /**
  *
  * @param {object} owner 主玩家
@@ -30,11 +20,11 @@ import {
  * @param {Array<string>} challengerIdArray 是否是挑战玩家对象
  * @returns
  */
-export default function ownerLayout(
+export default function OwnerLayout({
   owner,
   players,
   actionRecord,
-  challengerIdArray
+  challengerIdArray}
 ) {
   const cards = owner.characterCards.map((cardIndex, index) => {
     if (cardIndex >= 0) {
@@ -42,7 +32,7 @@ export default function ownerLayout(
         <Flex vertical align="center" justify="center" key={index}>
           <Image
             preview={false}
-            width={100}
+            width={80}
             src={characterCards[cardIndex].img}
           />
           <b>{characterCards[cardIndex].name}</b>
@@ -55,7 +45,7 @@ export default function ownerLayout(
 
   //主要的owner layout，其他是外接的补丁
   let commonLayout = (
-    <Flex gap={"small"} align="center" justify="center" className="bg-mask">
+    <Flex gap={"small"} align="center" justify="center" className="owner-mask">
       <Flex vertical align="center" justify="center">
         <Image preview={false} width={60} src={owner.avatar} />
         <b>{owner.name}</b>
@@ -67,7 +57,7 @@ export default function ownerLayout(
       <Flex vertical align="center" justify="center">
         <Image
           preview={false}
-          width={60}
+          width={40}
           src={judgeAllegiance(owner.allegiance).img}
         />
         <span>
@@ -76,29 +66,34 @@ export default function ownerLayout(
       </Flex>
     </Flex>
   );
-  
+
   //如果手牌为0,阵亡
-  if(owner.characterCardNum<=0||owner.isDead){
-    return <MaskComponent
-    playerComponent={
-      commonLayout
-    }
-    maskString={'阵亡'}
-    maskColor="var(--dead-color)"
-  />
+  if (owner.characterCardNum <= 0 || owner.isDead) {
+    return (
+      <MaskComponent
+        playerComponent={commonLayout}
+        maskString={"阵亡"}
+        maskColor="var(--dead-color)"
+      />
+    );
   }
 
+  //逻辑
   if (actionRecord.actionPlayerId === owner.id) {
     //主玩家是行动玩家
+
+    //给个蒙版
     commonLayout = (
       <div style={{ backgroundColor: "var(--attacker-color)" }}>
         {commonLayout}
       </div>
     );
-    //'Act'不用管
 
-    if(actionRecord.period==='ActConclusion'){
-      return commonLayout
+    if (
+      actionRecord.period === "ActConclusion" ||
+      actionRecord.period === "Act"
+    ) {
+      return commonLayout;
     }
 
     const message = (
@@ -106,11 +101,13 @@ export default function ownerLayout(
     );
 
     return (
-      <MessageComponent
-        component={commonLayout}
-        messageComponent={message}
-        direction={"top"}
-      />
+      <>
+        <MessageComponent
+          component={commonLayout}
+          messageComponent={message}
+          direction={"top"}
+        />
+      </>
     );
   } else {
     //主玩家是非行动玩家
@@ -130,7 +127,7 @@ export default function ownerLayout(
           {commonLayout}
         </div>
       );
-      
+
       if (actionRecord.period === "BlockChallenge") {
         //是受击玩家且打印block信息
         const message = <BlockMessage actionRecord={actionRecord} />;

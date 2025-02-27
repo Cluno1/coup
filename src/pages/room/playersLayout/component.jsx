@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import "./playersLayout.css";
 import { Popover, Image } from "antd";
 import { courtDeckBackgroundUrl } from "../../utl/imgUrl";
 import characterCards from "../character";
 import CardFlip from "../challengeConclusion/cardFlip";
+import { Flex } from "antd";
 
 /**
  *简单蒙版组件
@@ -19,10 +20,10 @@ export function MaskComponent({
 }) {
   return (
     <div className="mask-container">
+      {playerComponent}
       <div className="mask-layer" style={{ backgroundColor: maskColor }}>
         <span className="mask-text">{maskString}</span>
       </div>
-      {playerComponent}
     </div>
   );
 }
@@ -86,7 +87,25 @@ export const isChallenger = (actionRecord, challengerIdArray, player) => {
  */
 export function ActMessage({ actionRecord, owner, players }) {
   if (!actionRecord.character) {
-    null;
+    //独吞 是额外的界面
+    if (actionRecord.actionName === "Embezzlement") {
+      return (
+        <Flex vertical align="center" justify="center">
+          <span>
+            我没有<b>{"Duke"}</b>
+          </span>
+          <span>
+            行动<b>{actionRecord.actionName}</b>
+          </span>
+        </Flex>
+      );
+    } else {
+      return (
+        <Flex vertical align="center" justify="center">
+          <span>{actionRecord.actionName}</span>
+        </Flex>
+      );
+    }
   }
   //act的信息：
   let victimName = null;
@@ -101,13 +120,19 @@ export function ActMessage({ actionRecord, owner, players }) {
   }
 
   return (
-    <>
-      <p>
+    <Flex vertical align="center" justify="center">
+      <span>
         我拥有<b>{actionRecord.character}</b>
-      </p>
-      <p>使用{actionRecord.actionName}</p>
-      {victimName ? <p>对待{victimName}</p> : null}
-    </>
+      </span>
+      <span>
+        使用<b>{actionRecord.actionName}</b>
+      </span>
+      {victimName ? (
+        <p>
+          对待<b>{victimName}</b>
+        </p>
+      ) : null}
+    </Flex>
   );
 }
 
@@ -148,7 +173,7 @@ export const courtDeck = (player, imgWidth, cardFlipName = "") => {
     });
   }
 
-  if (player.characterCards) {
+  if (player.characterCards || player.characterCards?.length >= 1) {
     //是主玩家，展示主玩家的牌
 
     const cards = player.characterCards.map((cardIndex) => {
@@ -211,7 +236,7 @@ export const courtDeck = (player, imgWidth, cardFlipName = "") => {
  */
 export function canSelectCourt(owner, imgWidth, onSelect) {
   const [selectCard, setSelectCard] = useState(null);
-
+  const isSelected = useRef(false);
   const selectedCss = {
     width: `${imgWidth * 1.3}px`,
     transform: "translateY(-20%) ",
@@ -228,13 +253,19 @@ export function canSelectCourt(owner, imgWidth, onSelect) {
     return (
       <>
         <img
-          style={selectCard === cardIndex ? selectedCss : cardCss}
+          style={
+            selectCard === cardIndex && isSelected.current
+              ? selectedCss
+              : cardCss
+          }
           src={characterCards[cardIndex].img}
           onClick={() => {
             if (selectCard != cardIndex) {
+              isSelected.current = true;
               setSelectCard(cardIndex);
               onSelect(cardIndex);
             } else {
+              isSelected.current = false;
               setSelectCard(null);
               onSelect(null);
             }

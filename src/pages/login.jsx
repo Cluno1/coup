@@ -1,7 +1,7 @@
 import { Input, Flex } from "antd";
 import { UserOutlined, KeyOutlined } from "@ant-design/icons";
 import { Button } from "antd/es";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "./utl/api/api";
 function Login() {
@@ -24,6 +24,14 @@ function Login() {
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
 
+   // 从 localStorage 中获取存储的账号和密码
+   useEffect(() => {
+    const savedAccount = localStorage.getItem("account");
+    const savedPassword = localStorage.getItem("password");
+    if (savedAccount) setAccount(savedAccount);
+    if (savedPassword) setPassword(savedPassword);
+  }, []);
+
   function changeInput(val, e) {
     if (val === "account") setAccount(e.target.value);
     else if (val === "password") setPassword(e.target.value);
@@ -33,7 +41,9 @@ function Login() {
     if (account && password) {
       let user = await api.login({ account, password });
       if (!user?.code) {
-        //进行登录
+        
+        localStorage.setItem("account", account);
+        localStorage.setItem("password", password);
         navigate("/home", { state: { user } });
       }
     }

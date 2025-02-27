@@ -10,24 +10,33 @@ import { Success, SuccessFinal } from "./success";
  * @param {boolean} isSuccess 是否成功质疑
  */
 export default function challengeConclusion(
+  roomId,
   owner,
   challenger,
   actor,
   actorCharacter,
   isSuccess,
 ) {
+  
+  
+  if(!challenger||!actor||!actorCharacter){
+    console.log(challenger,actor,actorCharacter,isSuccess)
+    console.log('to challenge conclusion but return nothing')
+    return null;
+  }
 
   if (owner.id === actor.id) {
     //owner是行动者
     if (isSuccess) {
-      //质疑成功  ,owner失败，需要挑选一张扔掉
+      //质疑成功 ,owner失败，需要挑选一张扔掉
 
       
       if (actor.characterCardNum <= 1) {//看行动者是否仅剩一张牌
-        return <FailFinal winner={actor} />;
+        return <FailFinal ownerId={owner.id} winner={challenger} roomId={roomId}/>;
       }
       return (
         <Fail
+          roomId={roomId}
           owner={owner}
           another={challenger}
           isActor={true}
@@ -59,7 +68,7 @@ export default function challengeConclusion(
     } else {
       //质疑失败,owner失败,actor成功
       if (challenger.characterCardNum <= 1) {//看质疑者是否仅剩一张牌
-        return <FailFinal winner={actor} />;
+        return <FailFinal ownerId={owner.id} winner={actor} roomId={roomId}/>;
       }
 
       return (
@@ -68,6 +77,7 @@ export default function challengeConclusion(
           another={actor}
           isActor={false}
           actorCharacter={actorCharacter}
+          roomId={roomId}
         />
       );
     }

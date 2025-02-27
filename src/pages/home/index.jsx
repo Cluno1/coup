@@ -7,6 +7,27 @@ import { Button } from "antd/es";
 import CreateHome from "./createRoom";
 import GameLobby from "./gameLobby";
 import "../../App.css";
+import api from "../utl/api/api";
+
+async function getUserByLocalStorage() {
+  const savedAccount = localStorage.getItem("account");
+  const savedPassword = localStorage.getItem("password");
+  if (savedAccount && savedPassword) {
+    const user = await api.login({
+      account: savedAccount,
+      password: savedPassword,
+    });
+    if (!user?.code) {
+      return user;
+    }
+  }
+  return {
+    account: "游客",
+    name: "小可爱_游客",
+    user_rank: "",
+    id: null,
+  };
+}
 
 /**
  * // 连接到 WebSocket 服务器
@@ -30,15 +51,19 @@ import "../../App.css";
 export default function Home() {
   //路由传值接收部分  ： 包括账号名称，昵称，用户id，用户金币等级
   const location = useLocation();
-  const [user,setUser]=useState({account:'',name:'',user_rank:''});
+  const [user, setUser] = useState({ account: "", name: "", user_rank: "" });
   useEffect(() => {
-    const state = location?.state;
-    const account = state?.user?.account || "游客";
-    const name = state?.user?.name || "小可爱_游客";
-    const id = state?.user?.id || null;
-    //用户信息
-    let user = { ...state?.user, id, account, name };
-    setUser(user);
+    
+    if (location?.state) {
+      //用户信息
+      setUser({ ...location?.state?.user });
+    } else {
+      const a = async () => {
+        const u = await getUserByLocalStorage();
+        setUser(u);
+      };
+      a();
+    }
   }, []);
 
   /**account:"cluno"

@@ -4,6 +4,8 @@ import { background } from "../challengeConclusion/component";
 import characterCards from "../character";
 import { useEffect, useState } from "react";
 import { Avatar } from "antd";
+import { useSocket } from "../../utl/socketContext";
+import { serverMessage } from "../../utl/socket.message";
 
 
 const selectedCss = (imgWidth) => ({
@@ -81,9 +83,10 @@ function CheckCourtImg({
  * 抽取牌库的牌,选择重新组成手牌
  * @param {*} actionRecord
  * @param {*} owner
+ * @param {*} roomId
  * @returns
  */
-export function Exchange({ actionRecord, owner }) {
+export function Exchange({ roomId,actionRecord, owner }) {
   //图片宽
   const courtImgWidth = 120;
   const selectedCourtImgWidth = 90;
@@ -163,6 +166,17 @@ export function Exchange({ actionRecord, owner }) {
     );
   });
 
+  const socket=useSocket()
+  function handleSubmit(){
+    const characterArray=selectCards.map((sc)=>{
+      return sc.cardName
+    })
+    socket.emit(serverMessage.exchangeConclusion,{
+      roomId: roomId,
+      newCharacterArray: characterArray
+    })
+  }
+
   return (
     <>
       <div className="success-mask">
@@ -205,7 +219,7 @@ export function Exchange({ actionRecord, owner }) {
                 {selectedCourtImg}
               </Flex>
               <div style={{ minWidth: "100px" }}>
-                <Button type="primary" disabled={!showButton}>
+                <Button type="primary" disabled={!showButton} onClick={handleSubmit}>
                   确定
                 </Button>
               </div>
@@ -222,9 +236,10 @@ export function Exchange({ actionRecord, owner }) {
  * @param {*} actionRecord
  * @param {*} owner
  * @param {*} players
+ * @param {*} roomId
  * @returns
  */
-export function Examine({ actionRecord, owner, players }) {
+export function Examine({roomId, actionRecord, owner, players }) {
   //图片宽
   const courtImgWidth = 120;
   const ownerImgWidth = 90;
@@ -255,6 +270,14 @@ export function Examine({ actionRecord, owner, players }) {
       />
     );
   });
+
+  const socket=useSocket()
+  function handleClick(isChange){
+    socket.emit(serverMessage.examineConclusion,{
+      roomId: roomId,
+      isExamine: isChange
+    })
+  }
 
   return (
     <>
@@ -301,8 +324,8 @@ export function Examine({ actionRecord, owner, players }) {
                 {ownerCourtImg}
               </Flex>
               <Flex style={{ minWidth: "100px" }} gap={"small"}>
-                <Button type="primary">更换</Button>
-                <Button type="primary">不更换</Button>
+                <Button type="primary" onClick={()=>handleClick(true)}>更换</Button>
+                <Button type="primary" onClick={()=>handleClick(false)}>不更换</Button>
               </Flex>
             </Flex>
           </div>

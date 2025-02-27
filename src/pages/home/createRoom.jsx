@@ -38,6 +38,11 @@ export default function CreateRoom(props) {
     if (!user.id) {
       alert("请先登录");
       setOpen(false);
+      return
+    }
+    if(roomName==='' || roomName === null){
+      alert("房间名称不能为空");
+      return
     }
     setConfirmLoading(true);
 
