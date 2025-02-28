@@ -8,7 +8,7 @@ import { useSocket } from "../utl/socketContext";
 import { useNavigate } from "react-router-dom";
 import { clientMessage, serverMessage } from "../utl/socket.message";
 
-export default function GameLobby({ isOpen, setIsOpen, user }) {
+export default function GameLobby({ messageApi, isOpen, setIsOpen, user }) {
   useEffect(() => {
     async function a() {
       //获取room列表
@@ -29,13 +29,12 @@ export default function GameLobby({ isOpen, setIsOpen, user }) {
   ({ name, avatar, user_rank } = user);
 
   const handleRoomClick = (room) => {
-    console.log("click --32");
     setPasswordConfirm(true);
     if (!room.isPublic && !visible) {
       setVisible(true);
     } else {
       room.password = inputPassword;
-      
+
       socket.connect();
       socket.emit(serverMessage.joinRoom, {
         room: room,
@@ -47,7 +46,7 @@ export default function GameLobby({ isOpen, setIsOpen, user }) {
 
         setPasswordConfirm(true);
         setVisible(false);
-        //navigate("/home", { state: { user } });
+
         navigate("/readyRoom", {
           state: { players: data.players, room, user },
         });
@@ -57,14 +56,16 @@ export default function GameLobby({ isOpen, setIsOpen, user }) {
       socket.on("joinRoomFail", (error) => {
         console.error("Failed to join the room:", error);
         // 这里可以处理加入房间失败的逻辑，比如显示错误消息等
-        alert(error);
+
+        messageApi.info(error);
         setPasswordConfirm(false);
         socket.disconnect();
       });
       socket.on(clientMessage.roomIsFull, (error) => {
         console.error("room is full:", error);
         // 这里可以处理加入房间失败的逻辑，比如显示错误消息等
-        alert(error);
+        // alert(error);
+        messageApi.info(error);
         setPasswordConfirm(false);
         socket.disconnect();
       });

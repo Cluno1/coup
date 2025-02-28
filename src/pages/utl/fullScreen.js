@@ -1,12 +1,12 @@
 import { RotateLeftOutlined } from "@ant-design/icons";
 import { Flex } from "antd";
 import { Button } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../../App.css";
 
 const FullScreenComponent = () => {
   const [isFullscreen, setIsFullscreen] = useState(false);
-
+  const canNotFullScreen=useRef(false)
   const handleFullScreen = () => {
     const element = document.documentElement;
 
@@ -26,9 +26,15 @@ const FullScreenComponent = () => {
 
       // 检测是否为移动设备并设置横屏
       if (/Mobi|Android/i.test(navigator.userAgent)) {
-        screen.orientation.lock("landscape").catch((error) => {
-          console.error("无法锁定屏幕方向:", error);
-        });
+        if (screen.orientation && screen.orientation.lock) {
+          screen.orientation.lock("landscape").catch((error) => {
+            console.error("无法锁定屏幕方向:", error);
+            alert("该浏览器或手机系统不支持自动横屏,请手动设置横屏");
+            canNotFullScreen.current=true
+            setIsFullscreen(false)
+          });
+        }
+        setIsFullscreen(true)
       }
     } else {
       if (document.exitFullscreen) {
@@ -42,7 +48,9 @@ const FullScreenComponent = () => {
       }
 
       // 解锁屏幕方向
-      screen.orientation.unlock();
+      if (screen.orientation && screen.orientation.unlock) {
+        screen.orientation.unlock();
+      }
     }
   };
 
@@ -86,11 +94,18 @@ const FullScreenComponent = () => {
         top: 0,
         right: 0,
         bottom: 0,
+        
         backgroundColor: "gray",
         color: "white",
       }}
     >
-      <Flex vertical gap={"small"} align="center" justify="center" style={{width:'99vw',height:'98vh'}} >
+      <Flex
+        vertical
+        gap={"small"}
+        align="center"
+        justify="center"
+        style={{ width: "99vw", height: "98vh" }}
+      >
         <span>开始游戏请全屏体验</span>
         <div>
           <Button size={"large"} onClick={handleFullScreen}>
@@ -103,7 +118,7 @@ const FullScreenComponent = () => {
 
   return (
     <div>
-      {/* {isFullscreen ? null : topFullScreen} */}
+      {isFullscreen || canNotFullScreen.current ? null : topFullScreen}
 
       <Button size={"large"} onClick={handleFullScreen}>
         {isFullscreen ? <RotateLeftOutlined /> : "全屏"}

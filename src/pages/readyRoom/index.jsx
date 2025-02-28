@@ -107,7 +107,7 @@ export function ReadyRoom() {
       socket.off("playersAllReady", pAllReady);
       socket.off(clientMessage.deleteRoomOk, sDeleteOk);
     };
-  }, []);
+  }, [user,room]);
 
   function handleLeave() {
     socket.emit("leaveRoom", {

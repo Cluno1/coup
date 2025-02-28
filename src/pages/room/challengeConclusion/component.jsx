@@ -332,7 +332,7 @@ export const ActConclusionPlayerLayout = (
       />
       <Button
         type="primary"
-        disabled={selectCard ? false : true}
+        disabled={selectCard!==null ? false : true}
         onClick={handleButton}
         style={{ color: "white" }}
       >
@@ -416,6 +416,12 @@ export function CommonProgress({
   const [percent, setPercent] = useState(nowTime / totalTime);
 
   const [showTime, setShowTime] = useState(nowTime);
+  
+
+  useEffect(() => {
+    console.log("set showTime = nowTIme");
+    setShowTime(nowTime);
+  }, [isShow]);
 
   useEffect(() => {
     if (isInterval) {

@@ -93,10 +93,10 @@ export default function lMRPlayerLayout(
 
   //图片宽度
   let imgWidth = 120;
-  if (player.length <= 3 && player.length > 1) {
+  if (player.length <= 2 && player.length > 1) {
     imgWidth = imgWidth / 2;
   } else if (player.length == 1) {
-    imgWidth=100;
+    imgWidth=90;
   } else {
     imgWidth = imgWidth / 3;
   }

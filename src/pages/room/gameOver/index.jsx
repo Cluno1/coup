@@ -46,7 +46,7 @@ export function GameOver({ players, owner, roomBase }) {
   return (
     <>
       <div className="success-mask">
-        <div style={{ position: "absolute", left: 0, top: 0 }}>
+        <div style={{ position: "absolute", left: '5px', top: '5px' }}>
           <Button type="primary" onClick={handleClick}>
             返回主页
           </Button>

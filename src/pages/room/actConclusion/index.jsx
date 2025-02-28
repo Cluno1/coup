@@ -15,7 +15,7 @@ import { ActSpectator } from "../challengeConclusion/spectator";
  *  @param {*} owner
  * @returns
  */
-export function ActConclusion({roomId='', actionRecord, players, owner }) {
+export function ActConclusion({ roomId = "", actionRecord, players, owner }) {
   const [isShow, setIsShow] = useState(true);
   useEffect(() => {
     setIsShow(true);
@@ -33,9 +33,7 @@ export function ActConclusion({roomId='', actionRecord, players, owner }) {
   }
 
   let actionPlayer = null; //行动玩家的名称
-  let victimPlayer = null;//受击玩家名称
-
-  
+  let victimPlayer = null; //受击玩家名称
 
   if (owner.id === actionRecord.actionPlayerId) {
     //本玩家是行动玩家
@@ -45,24 +43,30 @@ export function ActConclusion({roomId='', actionRecord, players, owner }) {
       actionRecord.actionName === characterCards[3].actions ||
       actionRecord.actionName === characterCards[5].actions[0]
     ) {
-      return <Exchange roomId={roomId} owner={owner} actionRecord={actionRecord} />;
+      return (
+        <Exchange roomId={roomId} owner={owner} actionRecord={actionRecord} />
+      );
     } else if (actionRecord.actionName === characterCards[5].actions[1]) {
       //看牌组件
       return (
-        <Examine  roomId={roomId} owner={owner} actionRecord={actionRecord} players={players} />
+        <Examine
+          roomId={roomId}
+          owner={owner}
+          actionRecord={actionRecord}
+          players={players}
+        />
       );
     }
   } else {
     //主玩家不是行动玩家
-    if(owner.id===actionRecord.victimPlayerId){
-      victimPlayer=owner;
+    if (owner.id === actionRecord.victimPlayerId) {
+      victimPlayer = owner;
     }
-    
   }
   players.forEach((p) => {
     if (p.id === actionRecord.actionPlayerId) {
       actionPlayer = p;
-    }else if(p.id === actionRecord.victimPlayerId){
+    } else if (p.id === actionRecord.victimPlayerId) {
       victimPlayer = p;
     }
   });
@@ -71,35 +75,49 @@ export function ActConclusion({roomId='', actionRecord, players, owner }) {
     actionRecord.actionName === "Assassinate" ||
     actionRecord.actionName === "Coup"
   ) {
-    if(!victimPlayer?.id){
-      console.log('找不到受击玩家')
-      return
-    }else{
-      if(victimPlayer.characterCardNum<=1){
+    if (!victimPlayer?.id) {
+      console.log("找不到受击玩家");
+      return;
+    } else {
+      if (victimPlayer.characterCardNum <= 1) {
         //最后一击,这个受击玩家已经死亡了
-        console.log('最后一击,这个受击玩家已经死亡了')
-        if(owner.id===victimPlayer.id){
-          return <ActFailFinal ownerId={owner.id} winner={actionPlayer} roomId={roomId} />
-        }else {
-          return <SuccessFinal winner={actionPlayer} />
+        console.log("最后一击,这个受击玩家已经死亡了");
+        if (owner.id === victimPlayer.id) {
+          return (
+            <ActFailFinal
+              ownerId={owner.id}
+              winner={actionPlayer}
+              roomId={roomId}
+            />
+          );
+        } else {
+          return <SuccessFinal winner={actionPlayer} />;
         }
-        
-      }else{
-        console.log('coup 或 刺杀 行动结算')
-        if(owner.id===victimPlayer.id){
-          return <ActFail owner={owner} another={actionPlayer} roomId={roomId} />
-        }else if(owner.id === actionPlayer.id){
-          return <ActSuccess owner={owner} another={victimPlayer} isActor={true} />
-        }else{
-          return <ActSpectator actor={actionPlayer} challenger={victimPlayer} isChallengeSuccess={true} />
+      } else {
+        console.log("coup 或 刺杀 行动结算");
+        if (owner.id === victimPlayer.id) {
+          return (
+            <ActFail owner={owner} another={actionPlayer} roomId={roomId} />
+          );
+        } else if (owner.id === actionPlayer.id) {
+          return (
+            <ActSuccess owner={owner} another={victimPlayer} isActor={true} />
+          );
+        } else {
+          return (
+            <ActSpectator
+              actor={actionPlayer}
+              challenger={victimPlayer}
+              isChallengeSuccess={true}
+            />
+          );
         }
       }
-
     }
   }
 
   let message = null;
-  
+
   console.log("进入 行动结算界面 --act conclusion");
   message = (
     <>
@@ -128,11 +146,25 @@ export function ActConclusion({roomId='', actionRecord, players, owner }) {
               }}
             >
               <span>{actionPlayer?.name}</span>
+              <Flex align="center">
+                <span
+                  style={{
+                    fontSize: "16px",
+                    color: "white",
+                  }}
+                >
+                  {actionRecord.actionName}:
+                </span>
 
-              <span>
-                {actionRecord.actionName}
-                {actionRecord.actConclusion ? "开始行动" : "行动失败"}
-              </span>
+                <span
+                  style={{
+                    fontSize: "26px",
+                    color: "white",
+                  }}
+                >
+                  {actionRecord.actConclusion ? "开始行动" : "行动失败"}
+                </span>
+              </Flex>
             </Flex>
 
             <CommonProgress

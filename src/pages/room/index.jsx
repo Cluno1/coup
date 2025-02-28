@@ -261,16 +261,15 @@ export default function Room() {
   }, []);
 
   // 检查 location.state 是否存在，以及是否包含 user 信息
+  const userErr = useRef(false);
   useEffect(() => {
-    
     console.log(location);
     if (!location.state?.user) {
-      // 如果没有上一个界面，跳转到404error页面
-      messageApi.info('房间不存在')
+      userErr.current = true;
+      messageApi.info("房间不存在");
       setTimeout(() => {
-        navigate("/error");
+        navigate("/error", { state: { message: "房间不存在" } });
       }, 1000);
-      
     } else {
       user.current = location.state.user;
       roomId.current = location.state.roomId;
@@ -283,7 +282,6 @@ export default function Room() {
         name: user.current?.name,
         roomId: roomId.current,
       });
-      
     }
   }, [location, socket]);
 
@@ -333,24 +331,42 @@ export default function Room() {
     <>
       {contextHolder}
       {background("background")}
-      <Flex vertical>
-        {/* 头部 */}
+      <Flex
+        justify="space-between"
+        style={{
+          position: "absolute",
+          width: "100%",
+        }}
+      >
         <div
-          style={{ marginTop: "5px", marginLeft: "15px", marginRight: "10px" }}
+          style={{
+            marginLeft: "5px",
+            marginTop: "5px",
+          }}
         >
-          <Flex justify="space-between">
-            <FullScreenComponent />
-            <Flex gap={"small"}>{playerMiddle}</Flex>
-            <div>
-              <Flex vertical align="flex-start">
-                <span>时间:{timeDifference}</span>
-                <span>回合:{roomBase.round}</span>
-                <span>国库:{roomBase.treasuryReserve} coin</span>
-                <span>剩余牌数:{roomBase.courtDeckNum}</span>
-              </Flex>
-            </div>
+          {userErr.current ? null : <FullScreenComponent />}
+        </div>
+
+        <div
+          style={{
+            marginRight: "15px",
+            marginTop: "5px",
+          }}
+        >
+          <Flex vertical align="flex-start">
+            <span>时间:{timeDifference}</span>
+            <span>回合:{roomBase.round}</span>
+            <span>国库:{roomBase.treasuryReserve} coin</span>
+            <span>剩余牌数:{roomBase.courtDeckNum}</span>
           </Flex>
         </div>
+      </Flex>
+      <Flex vertical>
+        {/* 头部 */}
+
+        <Flex justify="center">
+          <Flex gap={"small"}>{playerMiddle}</Flex>
+        </Flex>
 
         <Flex
           justify="space-between"
@@ -367,6 +383,7 @@ export default function Room() {
           <div style={mainCss}>
             <Flex justify="center" gap={"large"} align="center" style={mainCss}>
               <MainContent
+                messageApi={messageApi}
                 actionRecord={actionRecord}
                 owner={owner}
                 players={players}

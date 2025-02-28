@@ -8,8 +8,10 @@ import CreateHome from "./createRoom";
 import GameLobby from "./gameLobby";
 import "../../App.css";
 import api from "../utl/api/api";
+import { message } from "antd";
 
 async function getUserByLocalStorage() {
+  
   const savedAccount = localStorage.getItem("account");
   const savedPassword = localStorage.getItem("password");
   if (savedAccount && savedPassword) {
@@ -49,6 +51,7 @@ async function getUserByLocalStorage() {
  */
 
 export default function Home() {
+  const [messageApi, contextHolder] = message.useMessage();
   //路由传值接收部分  ： 包括账号名称，昵称，用户id，用户金币等级
   const location = useLocation();
   const [user, setUser] = useState({ account: "", name: "", user_rank: "" });
@@ -110,6 +113,7 @@ user_rank:"gold"
 
   return (
     <div>
+      {contextHolder}
       <div
         style={{
           position: "absolute",
@@ -143,8 +147,8 @@ user_rank:"gold"
           加入房间
         </Button>
       </Flex>
-      <GameLobby isOpen={isOpen} setIsOpen={setIsOpen} user={user} />
-      <CreateHome open={isCreateHome} setOpen={setIsCreateHome} user={user} />
+      <GameLobby messageApi={messageApi} isOpen={isOpen} setIsOpen={setIsOpen} user={user} />
+      <CreateHome messageApi={messageApi} open={isCreateHome} setOpen={setIsCreateHome} user={user} />
     </div>
   );
 }

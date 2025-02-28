@@ -12,6 +12,7 @@ export default function CreateRoom(props) {
   const open = props.open;
   const setOpen = props.setOpen;
   const user = props.user;
+  const messageApi=props.messageApi;
   const { name, avatar, user_rank } = user;
 
   //loading状态
@@ -36,12 +37,14 @@ export default function CreateRoom(props) {
 
   const handleOk = async () => {
     if (!user.id) {
-      alert("请先登录");
+      // alert("请先登录");
+      messageApi.info('请先登录');
       setOpen(false);
       return
     }
     if(roomName==='' || roomName === null){
-      alert("房间名称不能为空");
+      
+      messageApi.info('房间名称不能为空');
       return
     }
     setConfirmLoading(true);
@@ -75,7 +78,8 @@ export default function CreateRoom(props) {
       socket.on("joinRoomFail", (error) => {
         console.error("Failed to join the room:", error);
         // 这里可以处理加入房间失败的逻辑，比如显示错误消息等
-        alert(error);
+        // alert(error);
+        messageApi.info(error)
         socket.disconnect();
       });
     }

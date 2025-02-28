@@ -228,15 +228,18 @@ export const courtDeck = (player, imgWidth, cardFlipName = "") => {
 };
 
 /**
- * 返回可被选择的手牌
+ * 返回可被选择的手牌 组件
  * @param {object} owner 主玩家
  * @param {number} imgWidth
  * @param {Function} onSelect
  * @returns
  */
 export function canSelectCourt(owner, imgWidth, onSelect) {
-  const [selectCard, setSelectCard] = useState(null);
-  const isSelected = useRef(false);
+  /**
+   * selectCard={index:'',key:''}
+   */
+  const [selectCard, setSelectCard] = useState({index:-1,key:-1});
+  
   const selectedCss = {
     width: `${imgWidth * 1.3}px`,
     transform: "translateY(-20%) ",
@@ -249,24 +252,25 @@ export function canSelectCourt(owner, imgWidth, onSelect) {
     transition: "all 0.4s ease-in-out",
   };
 
-  return owner.characterCards.map((cardIndex) => {
+  return owner.characterCards.map((cardIndex, index) => {
     return (
       <>
         <img
+          key={index}
           style={
-            selectCard === cardIndex && isSelected.current
+            selectCard.index === cardIndex &&selectCard.key=== index
               ? selectedCss
               : cardCss
           }
           src={characterCards[cardIndex].img}
           onClick={() => {
-            if (selectCard != cardIndex) {
-              isSelected.current = true;
-              setSelectCard(cardIndex);
+            if (selectCard.index != cardIndex && selectCard.key!= index) {
+              
+              setSelectCard({index:cardIndex,key:index});
               onSelect(cardIndex);
             } else {
-              isSelected.current = false;
-              setSelectCard(null);
+              
+              setSelectCard({index:-1,key:-1});
               onSelect(null);
             }
           }}

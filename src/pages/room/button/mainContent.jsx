@@ -10,7 +10,13 @@ import { DownOutlined } from "@ant-design/icons";
 import { CommonProgress } from "../challengeConclusion/component";
 
 //中间那个控制按钮的面板
-export default function MainContent({ roomId, actionRecord, owner, players }) {
+export default function MainContent({
+  messageApi,
+  roomId,
+  actionRecord,
+  owner,
+  players,
+}) {
   const [isAct, setIsAct] = useState(false); //行动按钮是否开放
   const [isChallenge, setIsChallenge] = useState(false); //挑战按钮是否开放
   const [isBlock, setIsBlock] = useState(false); //阻止按钮是否开放
@@ -54,10 +60,11 @@ export default function MainContent({ roomId, actionRecord, owner, players }) {
   }, [actionRecord, owner]);
 
   return (
-    <Flex gap="small" vertical>
+    <Flex gap="small" vertical align="center">
       <Flex gap="small" align="flex-end">
         <Instructions />
         <ActionButton
+          messageApi={messageApi}
           disabled={!isAct}
           players={players}
           roomId={roomId}
@@ -75,19 +82,43 @@ export default function MainContent({ roomId, actionRecord, owner, players }) {
               : ""
           }
         />
-        <BlockButton disabled={!isBlock} roomId={roomId} ownerId={owner.id} />
+        <BlockButton
+          messageApi={messageApi}
+          disabled={!isBlock}
+          roomId={roomId}
+          ownerId={owner.id}
+        />
       </Flex>
-      <CommonProgress
-        isInterval={true}
-        totalTime={15}
-        isShow={isChallenge || isBlock}
-      />
+      {isAct ? (
+        <CommonProgress
+          nowTime={0}
+          isInterval={true}
+          totalTime={15}
+          isShow={true}
+        />
+      ) : null}
+      {isChallenge ? (
+        <CommonProgress
+          nowTime={0}
+          isInterval={true}
+          totalTime={15}
+          isShow={true}
+        />
+      ) : null}
+      {isBlock ? (
+        <CommonProgress
+          nowTime={0}
+          isInterval={true}
+          totalTime={15}
+          isShow={true}
+        />
+      ) : null}
     </Flex>
   );
 }
 
 //行动按钮
-function ActionButton({ disabled, players, roomId, ownerId }) {
+function ActionButton({ messageApi,disabled, players, roomId, ownerId }) {
   const [actionChoose, setActionChoose] = useState("请选择"); //第一列动作名称记录
   const [actionVictim, setActionVictim] = useState(""); //第二列具体的行动所指的对象
 
@@ -100,7 +131,7 @@ function ActionButton({ disabled, players, roomId, ownerId }) {
   const socket = useSocket();
   function handleClick() {
     if (actionChoose === "请选择") {
-      alert("请选择行动");
+      messageApi.info("请选择行动");
     } else {
       let character = null; //寻找玩家行动的是哪个角色
       characterCards.forEach((c) => {
@@ -136,6 +167,9 @@ function ActionButton({ disabled, players, roomId, ownerId }) {
         actionVictimId: victimId,
         roomId,
       });
+      setTimeout(() => {
+        setAfterClick(false);
+      }, 3000);
     }
   }
   //更改了动作,立马更新对应玩家
@@ -366,7 +400,7 @@ function ChallengeButton({
   );
 }
 //阻止按钮
-function BlockButton({ disabled, roomId, ownerId }) {
+function BlockButton({ messageApi, disabled, roomId, ownerId }) {
   const [afterClick, setAfterClick] = useState(false);
   useEffect(() => setAfterClick(false), []);
   const socket = useSocket();
@@ -396,7 +430,7 @@ function BlockButton({ disabled, roomId, ownerId }) {
 
   function handleClick() {
     if (blocks === "请选择") {
-      alert("请选择行动");
+      messageApi.info("请选择行动");
     } else {
       let b = blocks,
         blockName = null;
