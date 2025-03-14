@@ -5,7 +5,6 @@ import Login from "./pages/login";
 import Register from "./pages/register";
 import Home from "./pages/home";
 import Room from "./pages/room";
-import Test from "./pages/test";
 import { ReadyRoom } from "./pages/readyRoom";
 import { SocketProvider } from "./pages/utl/socketContext";
 import { Error } from "./pages/failPage/error";
@@ -35,15 +34,14 @@ function App() {
   return (
     <div>
       <SocketProvider>
-      <Routes>
-        <Route path="/login" element={<Login />} /> //用法
-        <Route path="/register" element={<Register />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/room" element={<Room />} />
-        <Route path="/test" element={<Test />} />
-        <Route path="/readyRoom" element={<ReadyRoom />} />
-        <Route path="/error" element={<Error />} />
-      </Routes>
+        <Routes>
+          <Route path="/login" element={<Login />} /> //用法
+          <Route path="/register" element={<Register />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/room" element={<Room />} />
+          <Route path="/readyRoom" element={<ReadyRoom />} />
+          <Route path="/error" element={<Error />} />
+        </Routes>
       </SocketProvider>
     </div>
   );

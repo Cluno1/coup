@@ -1,19 +1,5 @@
 //角色
 
-import {
-  assassinate,
-  conversion,
-  coup,
-  embezzlement,
-  examine,
-  exchange1,
-  exchange2,
-  foreignAid,
-  income,
-  steal,
-  tax,
-} from "./rule";
-
 const actions = [
   "Tax",
   "Assassinate",
@@ -40,7 +26,7 @@ const Duke = {
   name: character[0],
   actions: actions[0],
   explain: "从银行获取3块钱",
-  act: tax,
+
   blocks: blocks[0],
 };
 const Assassin = {
@@ -48,7 +34,7 @@ const Assassin = {
   name: character[1],
   actions: actions[1],
   explain: "支付3块钱,使一名玩家失去一点势力",
-  act: assassinate,
+
   blocks: null,
 };
 const Captain = {
@@ -56,7 +42,7 @@ const Captain = {
   name: character[2],
   actions: actions[2],
   explain: "从一名玩家手里偷走两块钱",
-  act: steal,
+
   blocks: blocks[1],
 };
 const Ambassador = {
@@ -64,7 +50,7 @@ const Ambassador = {
   name: character[3],
   actions: actions[3],
   explain: "从牌库抽取两张牌,并返回牌库两张牌",
-  act: exchange2,
+
   blocks: blocks[1],
 };
 const Contessa = {
@@ -72,7 +58,7 @@ const Contessa = {
   name: character[4],
   actions: null,
   explain: null,
-  act: null,
+
   blocks: blocks[2],
 };
 const Inquisitor = {
@@ -83,7 +69,7 @@ const Inquisitor = {
     "从牌库抽取一张牌,并返回牌库一张牌",
     "检查一名玩家手牌,并决定他是否与牌库交换手牌",
   ],
-  act: [exchange1, examine],
+
   blocks: blocks[1],
 };
 
@@ -92,7 +78,7 @@ const incomeCharacter = {
   name: null,
   actions: "Income",
   explain: "从银行获取1块钱",
-  act: income,
+
   blocks: null,
 };
 const foreignAidCharacter = {
@@ -100,7 +86,7 @@ const foreignAidCharacter = {
   name: null,
   actions: "Foreign Aid",
   explain: "从银行获取2块钱",
-  act: foreignAid,
+
   blocks: null,
 };
 const coupCharacter = {
@@ -108,7 +94,7 @@ const coupCharacter = {
   name: null,
   actions: "Coup",
   explain: "支付7块钱,强制让一个玩家失去一点势力(金钱达到10或以上仅有政变选项)",
-  act: coup,
+
   blocks: null,
 };
 const conversionCharacter = {
@@ -116,7 +102,7 @@ const conversionCharacter = {
   name: null,
   actions: "Conversion",
   explain: "支付1块钱,改变自己阵营;或支付2块钱,改变一名玩家阵营",
-  act: conversion,
+
   blocks: null,
 };
 const embezzlementCharacter = {
@@ -124,7 +110,7 @@ const embezzlementCharacter = {
   name: null,
   actions: "Embezzlement",
   explain: "从国库获取所有钱(男爵除外)",
-  act: embezzlement,
+
   blocks: null,
 };
 
@@ -145,5 +131,3 @@ const commonActions = [
   embezzlementCharacter,
 ];
 export { commonActions };
-
-

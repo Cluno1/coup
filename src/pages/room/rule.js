@@ -93,8 +93,8 @@ function getRandomCardsIndex(courtDeck) {
       //如果cardNum==0;该玩家淘汰
   }
   export function steal(attacker,victim){
-      attacker+=2;
-      victim-=2;
+      attacker.coin+=2;
+      victim.coin-=2;
   }
   export function exchange1(player){
       const newCardIndex=getRandomCardsIndex()

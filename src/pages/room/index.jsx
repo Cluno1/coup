@@ -215,7 +215,6 @@ export default function Room() {
 
     const handleOwner = (data) => {
       console.log("主玩家更新", data);
-
       setOwner(data.owner);
     };
 

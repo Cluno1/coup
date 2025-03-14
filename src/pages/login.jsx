@@ -1,6 +1,5 @@
-import { Input, Flex } from "antd";
+import { Input, Flex, Button } from "antd";
 import { UserOutlined, KeyOutlined } from "@ant-design/icons";
-import { Button } from "antd/es";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "./utl/api/api";

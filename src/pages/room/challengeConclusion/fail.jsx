@@ -55,16 +55,14 @@ export function Fail({ roomId, owner, another, isActor, actorCharacter }) {
 export function FailFinal({ ownerId, winner, roomId }) {
   const socket = useSocket();
 
-  
-    console.log('come to fail')
-    if (winner && winner?.id && ownerId > 0) {
-      socket.emit(serverMessage.challengeKilled, {
-        playerId: ownerId,
-        roomId: roomId,
-        character: null,
-      });
-    }
-  
+  console.log("come to fail");
+  if (winner && winner?.id && ownerId > 0) {
+    socket.emit(serverMessage.challengeKilled, {
+      playerId: ownerId,
+      roomId: roomId,
+      character: null,
+    });
+  }
 
   return (
     <>
@@ -102,15 +100,18 @@ export function FailFinal({ ownerId, winner, roomId }) {
  */
 export function ActFailFinal({ ownerId, winner, roomId }) {
   const socket = useSocket();
+  console.log(winner, ownerId);
+  
 
-  useEffect(() => {
-    if (!winner && winner?.id && ownerId > 0) {
-      socket.emit(serverMessage.coupOrAssassinateConclusion, {
-        roomId: roomId,
-        character: null,
-      });
+    if (winner&&winner?.id && ownerId > 0) {
+      setTimeout(() => {
+        socket.emit(serverMessage.coupOrAssassinateConclusion, {
+          roomId: roomId,
+          character: null,
+        });
+      }, 3000);
     }
-  }, [ownerId, winner]);
+  
 
   return (
     <>
@@ -143,24 +144,18 @@ export function ActFailFinal({ ownerId, winner, roomId }) {
 /**
  * 行动结算阶段,被coup或刺杀需要丢失势力
  * {roomId, owner, another}
- * @param 
+ * @param
  * @returns
  */
 export function ActFail({ roomId, owner, another }) {
-  console.log('act fail 界面')
+  console.log("act fail 界面");
   return (
     <>
       <div className="success-mask">
         {background("fail")}
         <Flex vertical style={{ width: "100vw" }} align="center" gap={"small"}>
-          {ActConclusionPlayerLayout(
-            another,
-            true,
-            true,
-            false,
-            null
-          )}
-          {ActConclusionText(false,false)}
+          {ActConclusionPlayerLayout(another, true, true, false, null)}
+          {ActConclusionText(false, false)}
           {/*  用户点击选择哪一个卡片丢弃 */}
           {ActConclusionPlayerLayout(
             owner,

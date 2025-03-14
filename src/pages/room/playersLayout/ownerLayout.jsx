@@ -32,7 +32,7 @@ export default function OwnerLayout({
         <Flex vertical align="center" justify="center" key={index}>
           <Image
             preview={false}
-            width={80}
+            width={60}
             src={characterCards[cardIndex].img}
           />
           <b>{characterCards[cardIndex].name}</b>
@@ -47,7 +47,7 @@ export default function OwnerLayout({
   let commonLayout = (
     <Flex gap={"small"} align="center" justify="center" className="owner-mask">
       <Flex vertical align="center" justify="center">
-        <Image preview={false} width={60} src={owner.avatar} />
+        <Image preview={false} width={50} src={owner.avatar} />
         <b>{owner.name}</b>
         <span>
           player<b>{owner.id}</b>
@@ -57,7 +57,7 @@ export default function OwnerLayout({
       <Flex vertical align="center" justify="center">
         <Image
           preview={false}
-          width={40}
+          width={30}
           src={judgeAllegiance(owner.allegiance).img}
         />
         <span>
